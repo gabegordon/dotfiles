@@ -67,5 +67,10 @@
 "playerctl next"
    XF86AudioNext
 
+#Remark
+"xfce4-terminal --drop-down"
+    m:0x1 + c:50
+    Shift + Shift_L 
+
 #
 # End of xbindkeys configuration

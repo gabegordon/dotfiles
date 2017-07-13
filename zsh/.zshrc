@@ -86,3 +86,5 @@ source $ZSH/oh-my-zsh.sh
 alias emax="emacsclient -c -n"
 alias sudo="sudo "
 alias E="SUDO_EDITOR=\"emacsclient -t -a emacs\" sudoedit"
+eval "$(thefuck --alias)"
+source ~/.tldr.complete

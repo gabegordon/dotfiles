@@ -5,6 +5,15 @@ workspace 2 output eDP1
 workspace 3 output eDP1
 workspace 4 output eDP1
 workspace 5 output eDP1
+workspace 6 output eDP1
+workspace 7 output eDP1
+workspace 8 output eDP1
+workspace 9 output eDP1
+workspace 10 output eDP1
+workspace 11 output eDP1
+workspace 12 output eDP1
+workspace 13 output eDP1
+workspace Music output eDP1
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -17,7 +26,7 @@ bindsym $mod+l  exec sh ~/i3lock.sh
 bindsym $mod+o  exec scrot '%Y-%m-%d-%T_$wx$h_scrot.png' -e 'mv $f ~/Pictures/screenshots/'
 # Starts dmenu2 inside of j4-dmenu-desktop
 bindsym $mod+d exec dmenu_run
-
+bindsym $mod+t exec xfce4-terminal --drop-down
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
@@ -61,9 +70,9 @@ bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
-bindsym $mod+Shift+m workspace 11:Music
-bindsym $mod+Shift+n workspace 12:Mail
-bindsym $mod+Shift+b workspace 13:Emacs
+bindsym $mod+Shift+m workspace 11
+bindsym $mod+Shift+n workspace 12
+bindsym $mod+Shift+b workspace 13
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
 bindsym $mod+Shift+2 move container to workspace 2
@@ -125,8 +134,8 @@ exec --no-startup-id ~/.config/i3/compton.sh
 exec --no-startup-id dunst
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec --no-startup-id emacs --daemon
-exec --no-startup-id i3-msg 'workspace 12:Mail; exec /usr/bin/thunderbird'
-exec --no-startup-id i3-msg 'workspace 11:Music; exec /usr/bin/spotify'
+exec --no-startup-id i3-msg 'workspace 12; exec /usr/bin/thunderbird'
+exec --no-startup-id i3-msg 'workspace 11; exec /usr/bin/spotify'
 # Border colors
  client.focused           #FFFFFF #FFFFFF #FFFFFF #FFFFFF
  client.focused_inactive  #4298B8 #4298B8 #4298B8 #4298B8
