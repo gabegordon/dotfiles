@@ -8,7 +8,7 @@ workspace 5 output eDP1
 workspace 6 output eDP1
 workspace 7 output eDP1
 workspace 8 output eDP1
-workspace 9 output eDP1
+workspace 9 output HDMI2
 workspace 10 output eDP1
 workspace 11 output eDP1
 workspace 12 output eDP1
@@ -136,6 +136,7 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec --no-startup-id emacs --daemon
 exec --no-startup-id i3-msg 'workspace 12; exec /usr/bin/thunderbird'
 exec --no-startup-id i3-msg 'workspace 11; exec /usr/bin/spotify'
+exec --no-startup-id xset r rate 200 50  
 # Border colors
  client.focused           #FFFFFF #FFFFFF #FFFFFF #FFFFFF
  client.focused_inactive  #4298B8 #4298B8 #4298B8 #4298B8

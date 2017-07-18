@@ -72,5 +72,10 @@
     m:0x1 + c:50
     Shift + Shift_L 
 
+#Remark
+"Ctrl"
+    m:0x2 + c:66
+    Caps_Lock 
+
 #
 # End of xbindkeys configuration

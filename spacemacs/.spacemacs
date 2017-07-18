@@ -24,11 +24,14 @@ values."
    dotspacemacs-ask-for-lazy-installation t
    ;; If non-nil layers with lazy install support are lazy installed.
    ;; List of additional paths where to look for configuration layers.
-   ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
+   ;; Paths (add-to-list 'company-backends 'company-c-headers)must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     csv
+     yaml
+     python
      haskell
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -36,8 +39,7 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     (c-c++)
-     (clojure :variables clojure-enable-fancify-symbols t)
+     c-c++
      ;; better-defaults
      emacs-lisp
      themes-megapack
@@ -61,6 +63,15 @@ values."
                                       helm-flycheck
                                       buffer-move
                                       function-args
+                                      irony
+                                      company-irony
+                                      company-irony-c-headers
+                                      rtags
+                                      company-rtags
+                                      helm-rtags
+                                      flycheck-irony
+                                      flycheck-rtags
+                                      cmake-ide
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -140,8 +151,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Consolas"
-                               :size 14
+   dotspacemacs-default-font '("Source Code Pro"
+                               :size 44
                                :weight normal
                                :width normal
                                :powerline-scale 1.4)
@@ -288,7 +299,7 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup trailing
+   dotspacemacs-whitespace-cleanup 'trailing
    ))
 
 (defun dotspacemacs/user-init ()
@@ -322,18 +333,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (add-hook 'hack-local-variables-hook (lambda () (setq truncate-lines t)))
   (windmove-default-keybindings)
   (winner-mode 1)
-  (global-set-key "\C-c\ r" 'helm-recentf)
   (spacemacs/toggle-golden-ratio-on)
-  (spacemacs/set-leader-keys "tt" 'helm-etags-select)
-  (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++11")))
   (setq helm-semantic-fuzzy-match t
         helm-imenu-fuzzy-match    t
-        projectile-tags-command "c:\\ctags\\ctags.exe -R -e"
   )
-  (global-set-key "\C-c\ d" 'helm-semantic-or-imenu)
-  (global-set-key "\C-c\ s" 'helm-occur)
-  (global-set-key "\C-c\ z" 'avy-goto-line)
-  (global-set-key "\C-c\ x" 'avy-goto-char)
   (global-set-key (kbd "<C-S-up>")     'buf-move-up)
   (global-set-key (kbd "<C-S-down>")   'buf-move-down)
   (global-set-key (kbd "<C-S-left>")   'buf-move-left)
@@ -342,8 +345,68 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (global-set-key (kbd "M-C-<right>") 'enlarge-window-horizontally)
   (global-set-key (kbd "M-C-<down>") 'shrink-window)
   (global-set-key (kbd "M-C-<up>") 'enlarge-window)
-  (add-hook 'after-init-hook 'global-company-mode)
+
+  ;; RTAGS
+  (require 'rtags)
+  (require 'company-rtags)
+  (setq rtags-completions-enabled t)
+  (eval-after-load 'company
+    '(add-to-list
+      'company-backends 'company-rtags))
+  (setq rtags-autostart-diagnostics t)
+  (rtags-enable-standard-keybindings)
+  (require 'helm-rtags)
+  (setq rtags-use-helm t)
+  ;; END RTAGS
+
+  ;; IRONY
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async))
+
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  ;; END IRONY
+
+  ;; COMPANY-IRONY
+  (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+  (setq company-backends (delete 'company-semantic company-backends))
+  (require 'company-irony-c-headers)
+  (eval-after-load 'company
+    '(add-to-list
+      'company-backends '(company-irony-c-headers company-irony)))
+  (setq company-idle-delay 0)
+  (define-key c-mode-map [(tab)] 'company-complete)
+  (define-key c++-mode-map [(tab)] 'company-complete)
+  ;; END COMPANY-IRONY
+
+  ;; FLYCHECK
+  (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++14")))
+  (require 'flycheck-rtags)
+
+  (defun my-flycheck-rtags-setup ()
+    (flycheck-select-checker 'rtags)
+    (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+    (setq-local flycheck-check-syntax-automatically nil))
+  ;; c-mode-common-hook is also called by c++-mode
+  (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
+  ;; END FLYCHECK
+
+  ;; FLYCHECK-IRONY
+  (eval-after-load 'flycheck
+    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+  ;; END FLYCHECK-IRONY
+
+  (cmake-ide-setup)
+  (setq cmake-ide-build-dir "/home/gabe/CXXDecomQt/build")
   )
+
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -354,10 +417,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (flyspell-correct-helm flyspell-correct auto-dictionary google-c-style flymake-google-cpplint flymake-easy flymake-cursor clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu cider seq queue clojure-mode swiper ivy function-args smeargle orgit magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit with-editor zonokai-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pastels-on-dark-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme firebelly-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme flycheck-ycmd company-ycmd ycmd request-deferred let-alist deferred monokai-theme org-projectile org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot intero hlint-refactor hindent helm-hoogle haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode winum powerline spinner hydra parent-mode projectile fuzzy pkg-info epl flx smartparens iedit anzu evil goto-chg undo-tree highlight f s diminish irony bind-map bind-key packed dash helm avy helm-core async popup buffer-move company-irony helm-flycheck flycheck-pos-tip pos-tip flycheck helm-company helm-c-yasnippet disaster company-statistics company-c-headers company cmake-mode clang-format auto-yasnippet yasnippet ac-ispell auto-complete ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline restart-emacs request rainbow-delimiters quelpa popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
+    (csv-mode flycheck-rtags flycheck-irony company-irony-c-headers cmake-ide levenshtein helm-rtags company-rtags rtags yaml-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic zenburn-theme flyspell-correct-helm flyspell-correct auto-dictionary google-c-style flymake-google-cpplint flymake-easy flymake-cursor clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu cider seq queue clojure-mode swiper ivy function-args smeargle orgit magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit with-editor zonokai-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pastels-on-dark-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme firebelly-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme flycheck-ycmd company-ycmd ycmd request-deferred let-alist deferred monokai-theme org-projectile org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot intero hlint-refactor hindent helm-hoogle haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode winum powerline spinner hydra parent-mode projectile fuzzy pkg-info epl flx smartparens iedit anzu evil goto-chg undo-tree highlight f s diminish irony bind-map bind-key packed dash helm avy helm-core async popup buffer-move company-irony helm-flycheck flycheck-pos-tip pos-tip flycheck helm-company helm-c-yasnippet disaster company-statistics company-c-headers company cmake-mode clang-format auto-yasnippet yasnippet ac-ispell auto-complete ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline restart-emacs request rainbow-delimiters quelpa popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((((class color) (min-colors 89)) (:foreground "#ffffff" :background "#263238")))))
+ '(default ((t (:background nil)))))
