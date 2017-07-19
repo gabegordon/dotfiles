@@ -71,7 +71,6 @@ values."
                                       helm-rtags
                                       flycheck-irony
                                       flycheck-rtags
-                                      cmake-ide
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -382,8 +381,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
     '(add-to-list
       'company-backends '(company-irony-c-headers company-irony)))
   (setq company-idle-delay 0)
-  (define-key c-mode-map [(tab)] 'company-complete)
-  (define-key c++-mode-map [(tab)] 'company-complete)
   ;; END COMPANY-IRONY
 
   ;; FLYCHECK
@@ -403,8 +400,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
   ;; END FLYCHECK-IRONY
 
-  (cmake-ide-setup)
-  (setq cmake-ide-build-dir "/home/gabe/CXXDecomQt/build")
   )
 
 

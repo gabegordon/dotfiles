@@ -1,16 +1,15 @@
 [colors]
-foreground-alt = #232c34
+foreground-alt = #758696
 bluebg = #7cd0d6
 urgbg = #fc6a6a
 
 [bar/bar1]
-monitor = eDP1
-height = 30
-width = 2560
+height = 15
+width = 1920
 offset-x = 0
 offset-y = 5
 
-background = #ECE0D7
+background = #1f2328
 foreground = ${colors.foreground-alt}
 underline-color = #00f
 overline-color = #f00
@@ -32,7 +31,7 @@ tray-transparent = false
 tray-offset-y = -5
 
 font-0 = FontAwesome:size=10;0
-font-1 = SourceCodeProMedium:pixelsize=16;1
+font-1 = SourceCodeProMedium:pixelsize=12;1
 
 modules-left = i3
 modules-center = date music
@@ -162,6 +161,7 @@ label-mode-background = #e60053
 
 label-focused = %icon%
 label-focused-background = #78a090
+label-focused-foreground = #1b2126
 label-focused-padding = 2
 
 label-unfocused = %icon%
