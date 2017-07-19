@@ -4,10 +4,11 @@ bluebg = #7cd0d6
 urgbg = #fc6a6a
 
 [bar/bar1]
+override-redirect = true
+wm-restack = i3
 height = 15
-width = 1920
-offset-x = 0
-offset-y = 5
+width = 50%
+offset-x = 25%
 
 background = #1f2328
 foreground = ${colors.foreground-alt}
@@ -18,9 +19,6 @@ spacing = 0
 padding-right = 0
 module-margin-right = 2
 module-margin-left = 2
-
-;override-redirect = true
-;wm-restack = i3
 
 tray-position = right
 tray-detached = false
