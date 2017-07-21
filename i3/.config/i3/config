@@ -116,7 +116,7 @@ exec --no-startup-id emacs --daemon
 exec --no-startup-id i3-msg 'workspace 12; exec /usr/bin/thunderbird'
 exec --no-startup-id i3-msg 'workspace 11; exec /usr/bin/spotify'
 exec --no-startup-id xset r rate 200 50  
-
+exec --no-startup-id synergyc 192.168.122.171
 set $bg-color            #383C4A
 set $bd-color            #84927D
 set $inactive-bg-color   #383C4A
