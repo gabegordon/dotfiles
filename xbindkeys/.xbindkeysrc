@@ -35,47 +35,49 @@
 
 
 
-"pamixer --increase 5"
-    m:0x0 + c:123
-    XF86AudioRaiseVolume 
-
 "pamixer --decrease 5"
     m:0x0 + c:122
     XF86AudioLowerVolume 
 
+"pamixer --increase 5"
+    m:0x0 + c:123
+    XF86AudioRaiseVolume 
+
 "pamixer -t"
-   XF86AudioMute
+    m:0x0 + c:121
+    XF86AudioMute 
 
 "xbacklight -dec 10"
-   XF86MonBrightnessDown
+    m:0x0 + c:232
+    XF86MonBrightnessDown 
 
 "xbacklight -inc 10"
-   XF86MonBrightnessUp
+    m:0x0 + c:233
+    XF86MonBrightnessUp 
 
 "kbdlight up"
-   XF86KbdBrightnessUp
+    m:0x0 + c:238
+    XF86KbdBrightnessUp 
 
 "kbdlight down"
-   XF86KbdBrightnessDown
+    m:0x0 + c:237
+    XF86KbdBrightnessDown 
 
 "playerctl play-pause"
-   XF86AudioPlay
+    m:0x0 + c:172
+    XF86AudioPlay 
 
 "playerctl previous"
-   XF86AudioPrev
+    m:0x0 + c:173
+    XF86AudioPrev 
 
 "playerctl next"
-   XF86AudioNext
+    m:0x0 + c:171
+    XF86AudioNext 
 
-#Remark
-"xfce4-terminal --drop-down"
-    m:0x1 + c:50
-    Shift + Shift_L 
-
-#Remark
-"Ctrl"
-    m:0x2 + c:66
-    Caps_Lock 
+"Command"
+    m:0x0 + c:123
+    XF86AudioRaiseVolume 
 
 #
 # End of xbindkeys configuration

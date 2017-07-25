@@ -54,6 +54,7 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(sudo systemd)
 
 source $ZSH/oh-my-zsh.sh
+setopt HIST_FIND_NO_DUPS
 
 # User configuration
 
@@ -88,6 +89,8 @@ alias sudo="sudo "
 alias E="SUDO_EDITOR=\"emacsclient -t -a emacs\" sudoedit"
 eval "$(thefuck --alias)"
 source ~/.tldr.complete
+export PATH=~/mxe/usr/bin:$PATH
+
 function powerline_precmd() {
     PS1="$(~/powerline-shell.py $? --shell zsh 2> /dev/null)"
 }

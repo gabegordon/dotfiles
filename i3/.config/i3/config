@@ -1,26 +1,25 @@
 set $mod Mod4
-
-workspace 9 output HDMI2
-# Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# start a terminal
+# Program hotkeys
 bindsym $mod+Return exec xfce4-terminal
 bindsym $mod+Shift+ g exec google-chrome-stable
+bindsym $mod+e exec emacsclient -c -n
+bindsym $mod+m exec xfce4-terminal --title=ncmpcpp -x ncmpcpp
+bindsym $mod+space exec rofi -show run
+
 # kill focused window
 bindsym $mod+q kill
+
 bindsym $mod+l  exec sh ~/i3lock.sh
+
 bindsym $mod+o  exec scrot '%Y-%m-%d-%T_$wx$h_scrot.png' -e 'mv $f ~/Pictures/screenshots/'
-# Starts dmenu2 inside of j4-dmenu-desktop
-bindsym $mod+d exec dmenu_run
-bindsym $mod+t exec xfce4-terminal --drop-down
-# alternatively, you can use the cursor keys:
+
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-# alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
@@ -36,16 +35,14 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+bindsym $mod+Shift+s layout stacking
 bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+bindsym $mod+s layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 
-# change focus between tiling / floating windows
-bindsym $mod+space exec rofi -show run
-  
+
 # switch to workspace
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
@@ -74,7 +71,7 @@ bindsym $mod+Shift+0 move container to workspace 10
 # reload the configuration file
 bindsym $mod+Shift+c reload
 
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+# restart i3 inplace
 bindsym $mod+Shift+r restart
 
 # exit i3 (logs you out of your X session)
@@ -83,48 +80,45 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # resize window (you can also use the mouse for that)
 mode "resize" {
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+bindsym Left resize shrink width 10 px or 10 ppt
+bindsym Down resize grow height 10 px or 10 ppt
+bindsym Up resize shrink height 10 px or 10 ppt
+bindsym Right resize grow width 10 px or 10 ppt
+# back to normal: Enter or Escape
+bindsym Return mode "default"
+bindsym Escape mode "default"
 }
 
 bindsym $mod+r mode "resize"
-bar {
-	height 20
-	position top
-	mode invisible
-}
-# Other
-# Makes popus open floating
+
+# makes popus open floating
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 
-
-# Sets Bg
+# autostarts
 exec_always --no-startup-id feh --bg-fill /home/gabe/sam.png
 exec --no-startup-id xbindkeys
 exec --no-startup-id ~/.config/i3/compton.sh
 exec --no-startup-id dunst
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec --no-startup-id emacs --daemon
-exec --no-startup-id i3-msg 'workspace 12; exec /usr/bin/thunderbird'
-exec --no-startup-id i3-msg 'workspace 11; exec /usr/bin/spotify'
-exec --no-startup-id xset r rate 200 50  
+exec --no-startup-id i3-msg 'workspace 11; exec xfce4-terminal --title=ncmpcpp -x ncmpcpp; workspace 12; exec /usr/bin/thunderbird'
+exec --no-startup-id xset r rate 200 50
+exec --no-startup-id mopidy
 
 set $bg-color            #383C4A
-set $bd-color            #84927D
+set $bd-color            #424851
 set $inactive-bg-color   #383C4A
 set $inactive-bd-color   #383C4A
 set $text-color          #f3f4f5
 set $inactive-text-color #676E7D
+# colors                    border          background      text                 indicator  child border
+client.focused              $bd-color       $bg-color       $text-color          $bd-color  $bd-color
+client.unfocused            $bg-color       $bg-color       $inactive-text-color $bg-color  $bg-color
+client.focused_inactive     $bg-color       $bg-color       $inactive-text-color $bg-color  $bg-color
+client.urgent               $bg-color       $bg-color       $text-color          $bg-color  $bg-color
 
-# Gaps
- for_window [class="^.*"] border pixel 3
- gaps inner 10 
- gaps outer 10
+# gaps
+for_window [class="^.*"] border pixel 3
+gaps inner 10
+gaps outer 10
