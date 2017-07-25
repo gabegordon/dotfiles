@@ -87,6 +87,11 @@ setopt HIST_FIND_NO_DUPS
 alias emax="emacsclient -c -n"
 alias sudo="sudo "
 alias E="SUDO_EDITOR=\"emacsclient -t -a emacs\" sudoedit"
+alias susvm="sudo virsh dompmsuspend win10 mem"
+alias savevm="sudo virsh dompmsuspend win10 disk"
+alias attachvm="~/scripts/attach.sh"
+alias detachvm="~/scripts/detach.sh"
+export PATH=/home/gabe/mxe/usr/bin:$PATH
 eval "$(thefuck --alias)"
 source ~/.tldr.complete
 export PATH=~/mxe/usr/bin:$PATH
