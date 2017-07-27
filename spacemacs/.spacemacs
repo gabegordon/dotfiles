@@ -29,51 +29,39 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     auto-completion
+     c-c++
      markdown
      csv
      yaml
      python
      haskell
-     ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
-     ;; <M-m f e R> (Emacs style) to install them.
-     ;; ----------------------------------------------------------------
      helm
-     c-c++
-     ;; better-defaults
      emacs-lisp
      themes-megapack
      git
-     auto-completion
-     ;; markdown
      org
-     ;;  ycmd
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
-     ;;spell-checking
-     syntax-checking
      extra-langs
-     ;; version-control
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
-                                      helm-flycheck
+                                      windmove
                                       buffer-move
                                       function-args
-                                      irony
-                                      company-irony
-                                      company-irony-c-headers
                                       rtags
                                       company-rtags
                                       helm-rtags
-                                      flycheck-irony
+                                      irony-mode
+                                      company-irony
+                                      company-c-headers
+                                      flycheck
                                       flycheck-rtags
+                                      flycheck-irony
                                       cmake-ide
+                                      yasnippet
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -325,20 +313,12 @@ before packages are loaded. If you are unsure, you should try in setting them in
                   (innamespace . 0))))
   (push '(other . "gabe") c-default-style)
   (add-to-list 'exec-path "c:/Users/ggordon5/Documents")
-  (setq-default dotspacemacs-configuration-layers
-                '((c-c++ :variables
-                         c-c++-default-mode-for-headers 'c++-mode)))
 
-  (setq-default dotspacemacs-configuration-layers
-                '((auto-completion :variables
-                                   auto-completion-enable-snippets-in-popup t)))
   (add-hook 'hack-local-variables-hook (lambda () (setq truncate-lines t)))
   (windmove-default-keybindings)
-  (winner-mode 1)
   (spacemacs/toggle-golden-ratio-on)
-  (setq helm-semantic-fuzzy-match t
-        helm-imenu-fuzzy-match    t
-  )
+  (setq helm-mode-fuzzy-match t
+        )
   (global-set-key (kbd "<C-S-up>")     'buf-move-up)
   (global-set-key (kbd "<C-S-down>")   'buf-move-down)
   (global-set-key (kbd "<C-S-left>")   'buf-move-left)
@@ -348,64 +328,59 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (global-set-key (kbd "M-C-<down>") 'shrink-window)
   (global-set-key (kbd "M-C-<up>") 'enlarge-window)
 
-  (cmake-ide-setup)
-  ;; RTAGS
-  (require 'rtags)
-  (require 'company-rtags)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+  (add-to-list 'exec-path "~/.local/bin/")
+
+  (global-company-mode t)
+
   (setq rtags-completions-enabled t)
-  (eval-after-load 'company
-    '(add-to-list
-      'company-backends 'company-rtags))
   (setq rtags-autostart-diagnostics t)
   (rtags-enable-standard-keybindings)
-  (require 'helm-rtags)
   (setq rtags-use-helm t)
-  ;; END RTAGS
 
-  ;; IRONY
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'objc-mode-hook 'irony-mode)
-
   (defun my-irony-mode-hook ()
     (define-key irony-mode-map [remap completion-at-point]
       'irony-completion-at-point-async)
     (define-key irony-mode-map [remap complete-symbol]
       'irony-completion-at-point-async))
-
   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  ;; END IRONY
-
-  ;; COMPANY-IRONY
   (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-  (setq company-backends (delete 'company-semantic company-backends))
-  (require 'company-irony-c-headers)
-  (eval-after-load 'company
-    '(add-to-list
-      'company-backends '(company-irony-c-headers company-irony)))
+
   (setq company-idle-delay 0)
-  ;; END COMPANY-IRONY
+  (define-key c-mode-map [(tab)] 'company-complete)
+  (define-key c++-mode-map [(tab)] 'company-complete)
 
-  ;; FLYCHECK
-  (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++14")))
+  (add-hook 'c++-mode-hook 'flycheck-mode)
+  (add-hook 'c-mode-hook 'flycheck-mode)
+
   (require 'flycheck-rtags)
-
   (defun my-flycheck-rtags-setup ()
     (flycheck-select-checker 'rtags)
     (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
     (setq-local flycheck-check-syntax-automatically nil))
-  ;; c-mode-common-hook is also called by c++-mode
   (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
-  ;; END FLYCHECK
 
-  ;; FLYCHECK-IRONY
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-  ;; END FLYCHECK-IRONY
 
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-  (add-to-list 'exec-path "~/.local/bin/")
+  (cmake-ide-setup)
+  (setq tab-always-indent ‘complete)
+  (setq company-backends
+        '(
+          (
+           company-files
+           company-dabbrev
+           company-keywords
+           company-yasnippet
+           company-rtags
+           company-irony
+           )
+          (company-abbrev company-dabbrev)
+          ))
   )
 
 

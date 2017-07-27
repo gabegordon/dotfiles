@@ -7,7 +7,7 @@ bindsym $mod+Shift+ g exec google-chrome-stable
 bindsym $mod+e exec emacsclient -c -n
 bindsym $mod+m exec xfce4-terminal --title=ncmpcpp -x ncmpcpp
 bindsym $mod+space exec rofi -show run
-
+bindsym $mod+t exec xfce4-terminal --drop-down
 # kill focused window
 bindsym $mod+q kill
 
