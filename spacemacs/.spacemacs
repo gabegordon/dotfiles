@@ -302,6 +302,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
   )
 
 (defun dotspacemacs/user-config ()
+  (setq tab-always-indent 'complete)
   (c-add-style "gabe"
                '((indent-tabs=mode . nil)
                  (c-basic-offset . 4)
@@ -368,7 +369,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
   (cmake-ide-setup)
-  (setq tab-always-indent ‘complete)
   (setq company-backends
         '(
           (
