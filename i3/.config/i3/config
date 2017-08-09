@@ -8,6 +8,7 @@ bindsym $mod+e exec emacsclient -c -n
 bindsym $mod+m exec xfce4-terminal --title=ncmpcpp -x ncmpcpp
 bindsym $mod+space exec rofi -show run
 bindsym $mod+t exec xfce4-terminal --drop-down
+bindsym $mod+a exec xfce4-terminal -x ranger
 # kill focused window
 bindsym $mod+q kill
 
@@ -91,7 +92,7 @@ bindsym Escape mode "default"
 
 bindsym $mod+r mode "resize"
 
-# makes popus open floating
+# makes popups open floating
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 

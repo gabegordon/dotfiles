@@ -91,11 +91,11 @@ alias susvm="sudo virsh dompmsuspend win10 mem"
 alias savevm="sudo virsh dompmsuspend win10 disk"
 alias attachvm="~/scripts/attach.sh"
 alias detachvm="~/scripts/detach.sh"
-export PATH=/home/gabe/mxe/usr/bin:$PATH
+alias sudo='nocorrect sudo'
 eval "$(thefuck --alias)"
 source ~/.tldr.complete
-export PATH=~/mxe/usr/bin:$PATH
-
+export ALTERNATE_EDITOR=""
+export EDITOR="emacsclient -c -n -a emacs"
 function powerline_precmd() {
     PS1="$(~/powerline-shell.py $? --shell zsh 2> /dev/null)"
 }
