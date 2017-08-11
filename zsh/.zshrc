@@ -1,6 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-
+ export PATH=~/.npm-global/bin:$PATH
 # Path to your oh-my-zsh installation.
   export ZSH=/home/gabe/.oh-my-zsh
 
@@ -95,7 +95,7 @@ alias sudo='nocorrect sudo'
 eval "$(thefuck --alias)"
 source ~/.tldr.complete
 export ALTERNATE_EDITOR=""
-export EDITOR="emacsclient -c -n -a emacs"
+export EDITOR="emacsclient -t -a emacs"
 function powerline_precmd() {
     PS1="$(~/powerline-shell.py $? --shell zsh 2> /dev/null)"
 }

@@ -79,5 +79,8 @@
     m:0x0 + c:123
     XF86AudioRaiseVolume 
 
+"sleep .07 && xdotool key --clearmodifiers Delete"
+  shift + BackSpace
+
 #
 # End of xbindkeys configuration
