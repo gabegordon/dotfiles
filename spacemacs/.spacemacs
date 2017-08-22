@@ -310,18 +310,29 @@ before packages are loaded. If you are unsure, you should try in setting them in
   )
 
 (defun dotspacemacs/user-config ()
+  (indent-guide-global-mode)
+  (yas-global-mode 1)
+  (fa-config-default)
+  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+  (set-default 'semantic-case-fold t)
+
+  (defun my-c-mode-common-hook ()
+    ;; my customizations for all of c-mode, c++-mode, objc-mode, java-mode
+    (c-set-offset 'substatement-open 0)
+    ;; other customizations can go here
+
+    (setq c++-tab-always-indent t)
+    (setq c-basic-offset 4)                  ;; Default is 2
+    (setq c-indent-level 4)                  ;; Default is 2
+
+    (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
+    (setq tab-width 4)
+    (setq indent-tabs-mode t)  ; use spaces only if nil
+    )
+
+  (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
   (evil-snipe-override-mode 1)
   (add-hook 'edit-server-done-hook (lambda () (shell-command "wmctrl -a \"Google Chrome\"")))
-  (c-add-style "gabe"
-               '((indent-tabs=mode . nil)
-                 (c-basic-offset . 4)
-                 (c-offsets-alist
-                  (substatement-open . 0)
-                  (inline-open . 0)
-                  (statement-cont . c-lineup-assignments)
-                  (inextern-lang . 0)
-                  (innamespace . 0))))
-  (push '(other . "gabe") c-default-style)
   (add-to-list 'exec-path "c:/Users/ggordon5/Documents")
 
   (add-hook 'hack-local-variables-hook (lambda () (setq truncate-lines t)))
@@ -334,15 +345,14 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq org-agenda-files (list "~/Dropbox/Org/Agenda.org"))
   (setq org-capture-templates
         '(("t" "Todo" entry (file+headline "~/Dropbox/Org/Notes.org" "Tasks")
-          "* TODO \nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-        ("n" "Note" entry (file+datetree+headline "~/Dropbox/Org/Notes.org" "Notes")
-          "* %?\nEntered on %U\n  %i\n  %a")
-        ("d" "Deadline" entry (file "~/Dropbox/Org/Agenda.org")
-          "* TODO \nDEADLINE: %^t")
-        ))
+           "* TODO \nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
+          ("n" "Note" entry (file+datetree+headline "~/Dropbox/Org/Notes.org" "Notes")
+           "* %?\nEntered on %U\n  %i\n  %a")
+          ("d" "Deadline" entry (file "~/Dropbox/Org/Agenda.org")
+           "* TODO \nDEADLINE: %^t")
+          ))
 
   (spacemacs/toggle-golden-ratio-on)
-  (add-to-list 'golden-ratio-exclude-buffer-names " *ERC*")
 
   (setq helm-mode-fuzzy-match t
         )
@@ -381,8 +391,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
 
   (setq company-idle-delay 0)
-  (define-key c-mode-map [(tab)] 'company-complete)
-  (define-key c++-mode-map [(tab)] 'company-complete)
+  (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
+  (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
   (add-hook 'c++-mode-hook 'flycheck-mode)
   (add-hook 'c-mode-hook 'flycheck-mode)
 
