@@ -36,10 +36,6 @@
      (version-control :variables version-control-diff-tool 'diff-hl)
      yaml
      )
-   ;; List of additional packages that will be installed without being
-   ;; wrapped in a layer. If you need some configuration for these
-   ;; packages, then consider creating a layer. You can also put the
-   ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
                                       windmove
                                       function-args
@@ -163,9 +159,15 @@
   (global-centered-cursor-mode +1)
   (indent-guide-global-mode)
   (yas-global-mode 1)
-  (fa-config-default)
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
   (set-default 'semantic-case-fold t)
+
+  ;; Windmove
+  (windmove-default-keybindings)
+  (add-hook 'org-shiftup-final-hook 'windmove-up)
+  (add-hook 'org-shiftleft-final-hook 'windmove-left)
+  (add-hook 'org-shiftdown-final-hook 'windmove-down)
+  (add-hook 'org-shiftright-final-hook 'windmove-right)
 
   ;;C-C++ Indenting
   (add-hook 'c-mode-hook #'aggressive-indent-mode)
@@ -184,13 +186,6 @@
 
   ;; Emacs web edit
   (add-hook 'edit-server-done-hook (lambda () (shell-command "wmctrl -a \"Google Chrome\"")))
-
-  ;; Windmove
-  (windmove-default-keybindings)
-  (add-hook 'org-shiftup-final-hook 'windmove-up)
-  (add-hook 'org-shiftleft-final-hook 'windmove-left)
-  (add-hook 'org-shiftdown-final-hook 'windmove-down)
-  (add-hook 'org-shiftright-final-hook 'windmove-right)
 
   ;;Org
   (setq org-agenda-files (list "~/Dropbox/Org/Agenda.org"))
@@ -259,6 +254,7 @@
 
   ;; Python
   (add-hook 'python-mode-hook 'anaconda-mode)
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
