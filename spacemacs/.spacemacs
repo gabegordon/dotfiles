@@ -44,7 +44,7 @@
                                       helm-rtags
                                       irony
                                       company-irony
-                                      company-c-headers
+                                      company-irony-c-headers
                                       flycheck-rtags
                                       flycheck-irony
                                       helm-flycheck
@@ -207,18 +207,6 @@
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
   (add-to-list 'exec-path "~/.local/bin/")
 
-  ;; Company
-  (global-company-mode t)
-  (eval-after-load "company"
-    '(add-to-list 'company-backends 'company-anaconda))
-  (eval-after-load "company"
-    '(add-to-list 'company-backends '(company-irony-c-headers company-irony)))
-  (eval-after-load "company"
-    '(add-to-list 'company-backends 'company-rtags))
-  (setq company-idle-delay 0)
-  (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
-  (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
-
   ;; Rtags
   (setq rtags-completions-enabled t)
   (setq rtags-autostart-diagnostics t)
@@ -248,6 +236,19 @@
 
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+
+  ;; Company
+  (global-company-mode t)
+  (eval-after-load "company"
+    '(add-to-list 'company-backends 'company-anaconda))
+  (require 'company-irony-c-headers)
+  (eval-after-load "company"
+    '(add-to-list 'company-backends '(company-irony-c-headers company-irony)))
+  (eval-after-load "company"
+    '(add-to-list 'company-backends 'company-rtags))
+  (setq company-idle-delay 0)
+  (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
+  (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
 
   ;; CMake
   (cmake-ide-setup)
