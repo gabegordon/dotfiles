@@ -157,7 +157,6 @@
   ;;Settings
   (spacemacs/toggle-golden-ratio-on)
   (global-centered-cursor-mode +1)
-  (indent-guide-global-mode)
   (yas-global-mode 1)
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
   (set-default 'semantic-case-fold t)
@@ -169,23 +168,11 @@
   (add-hook 'org-shiftdown-final-hook 'windmove-down)
   (add-hook 'org-shiftright-final-hook 'windmove-right)
 
-  ;;C-C++ Indenting
-  (add-hook 'c-mode-hook #'aggressive-indent-mode)
-  (add-hook 'c++-mode-hook #'aggressive-indent-mode)
-  (defun my-c-mode-common-hook ()
-    (c-set-offset 'substatement-open 0)
-
-    (setq c++-tab-always-indent t)
-    (setq c-basic-offset 4)
-    (setq c-indent-level 4)
-
-    (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
-    (setq tab-width 4)
-    )
-  (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
-
-  ;; Emacs web edit
-  (add-hook 'edit-server-done-hook (lambda () (shell-command "wmctrl -a \"Google Chrome\"")))
+  ;; Clang format
+  (require 'clang-format)
+  (global-set-key (kbd "C-c i") 'clang-format-region)
+  (global-set-key (kbd "C-c u") 'clang-format-buffer)
+  (setq clang-format-style-option "google")
 
   ;;Org
   (setq org-agenda-files (list "~/Dropbox/Org/Agenda.org"))
@@ -207,48 +194,51 @@
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
   (add-to-list 'exec-path "~/.local/bin/")
 
-  ;; Rtags
+  ;; C-C++
+  (require 'rtags)
+  (require 'company-rtags)
+
   (setq rtags-completions-enabled t)
+  (eval-after-load 'company
+    '(add-to-list
+      'company-backends 'company-rtags))
   (setq rtags-autostart-diagnostics t)
   (rtags-enable-standard-keybindings)
+  (require 'helm-rtags)
   (setq rtags-use-helm t)
-
-  ;; C-C++ Irony
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+
   (defun my-irony-mode-hook ()
     (define-key irony-mode-map [remap completion-at-point]
       'irony-completion-at-point-async)
     (define-key irony-mode-map [remap complete-symbol]
       'irony-completion-at-point-async))
+
   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-
-  ;; Flycheck/Rtags
+  (setq company-backends (delete 'company-semantic company-backends))
+  (require 'company-irony-c-headers)
+  (eval-after-load 'company
+    '(add-to-list
+      'company-backends '(company-irony-c-headers company-irony)))
+  (setq company-idle-delay 0)
+  (define-key c-mode-map [(tab)] 'company-complete)
+  (define-key c++-mode-map [(tab)] 'company-complete)
   (add-hook 'c++-mode-hook 'flycheck-mode)
   (add-hook 'c-mode-hook 'flycheck-mode)
+  (require 'flycheck-rtags)
+
   (defun my-flycheck-rtags-setup ()
     (flycheck-select-checker 'rtags)
     (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
     (setq-local flycheck-check-syntax-automatically nil))
+  ;; c-mode-common-hook is also called by c++-mode
   (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
-
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-
-  ;; Company
-  (global-company-mode t)
-  (eval-after-load "company"
-    '(add-to-list 'company-backends 'company-anaconda))
-  (require 'company-irony-c-headers)
-  (eval-after-load "company"
-    '(add-to-list 'company-backends '(company-irony-c-headers company-irony)))
-  (eval-after-load "company"
-    '(add-to-list 'company-backends 'company-rtags))
-  (setq company-idle-delay 0)
-  (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
-  (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
 
   ;; CMake
   (cmake-ide-setup)
