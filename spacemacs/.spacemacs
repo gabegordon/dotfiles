@@ -39,17 +39,11 @@
    dotspacemacs-additional-packages '(
                                       windmove
                                       function-args
-                                      rtags
-                                      company-rtags
-                                      helm-rtags
                                       irony
                                       company-irony
                                       company-irony-c-headers
-                                      flycheck-rtags
                                       flycheck-irony
                                       helm-flycheck
-                                      cmake-ide
-                                      org-gcal
                                       evil-surround
                                       )
    dotspacemacs-frozen-packages '()
@@ -125,7 +119,6 @@
   (setq-default
    ;; Misc.
    vc-follow-symlinks t
-   indent-tabs-mode nil
 
    ;; Backups
    backup-directory-alist `((".*" . ,temporary-file-directory))
@@ -185,24 +178,12 @@
            "* TODO \nDEADLINE: %^t")
           ))
 
-  (require 'org-gcal)
-  (setq org-gcal-client-id "812442809891-d97oif1kmkl5opltr1a64qm73omns8ik.apps.googleusercontent.com"
-        org-gcal-client-secret "YC0HLvXhLkY4kXTYcaGYQgGP"
-        org-gcal-file-alist '(("gabegordon123@gmail.com" .  "~/Dropbox/Org/Agenda.org")))
-
   ;; Haskell
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
   (add-to-list 'exec-path "~/.local/bin/")
 
   ;; C-C++
-  (require 'rtags)
-  (require 'company-rtags)
 
-  (setq rtags-completions-enabled t)
-  (setq rtags-autostart-diagnostics t)
-  (rtags-enable-standard-keybindings)
-  (require 'helm-rtags)
-  (setq rtags-use-helm t)
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'objc-mode-hook 'irony-mode)
@@ -216,36 +197,17 @@
   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-  (setq company-backends (delete 'company-semantic company-backends))
-  (require 'company-irony-c-headers)
-  (add-hook 'c++-mode-hook
-          (lambda ()
-            (set (make-local-variable 'company-backends)
-                 (list
-                  (cons 'company-irony-c-headers 'company-irony 'company-rtags
-                        (car company-backends))))))
-  (setq company-idle-delay 0)
-  (define-key c-mode-map [(tab)] 'company-complete)
-  (define-key c++-mode-map [(tab)] 'company-complete)
-  (add-hook 'c++-mode-hook 'flycheck-mode)
-  (add-hook 'c-mode-hook 'flycheck-mode)
+  (eval-after-load 'company
+    '(add-to-list
+      'company-backends '(company-irony-c-headers company-irony company-dabbrev company-semantic)))
+  (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
+  (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
 
-  (require 'flycheck-rtags)
-  (defun my-flycheck-rtags-setup ()
-    (flycheck-select-checker 'rtags)
-    (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
-    (setq-local flycheck-check-syntax-automatically nil))
-  ;; c-mode-common-hook is also called by c++-mode
-  (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
-  ;; CMake
-  (cmake-ide-setup)
 
-  ;; Python
-  (add-hook 'python-mode-hook 'anaconda-mode)
-
+  (define-key python-mode-map [(tab)] 'company-indent-or-complete-common)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
