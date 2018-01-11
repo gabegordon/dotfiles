@@ -144,9 +144,27 @@
 
    ;; Shell
    shell-default-term-shell "/bin/zsh"
-  ))
+   ))
 
 (defun dotspacemacs/user-config ()
+  (setq company-frontends
+        '(company-tng-frontend
+          company-pseudo-tooltip-unless-just-one-frontend
+          company-echo-metadata-frontend
+          company-preview-frontend
+          company-quickhelp-frontend))
+
+  ;; Redefining like this works for me.
+  (defun company-preview-frontend (command)
+    "`company-mode' frontend showing the selection as if it had been inserted."
+    (pcase command
+      (`pre-command (company-preview-hide))
+      (`post-command
+       (unless (and company-selection-changed
+                    (memq 'company-tng-frontend company-frontends))
+         (company-preview-show-at-point (point)
+                                        (nth company-selection company-candidates))))
+      (`hide (company-preview-hide))))
   ;;Settings
   (spacemacs/toggle-golden-ratio-on)
   (global-centered-cursor-mode +1)
@@ -200,16 +218,11 @@
   (eval-after-load 'company
     '(add-to-list
       'company-backends '(company-irony-c-headers company-irony company-dabbrev company-semantic)))
-  (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
-  (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
 
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
-
-  (define-key python-mode-map [(tab)] 'company-indent-or-complete-common)
   )
-
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 (custom-set-variables
