@@ -199,9 +199,6 @@
   (require 'company-rtags)
 
   (setq rtags-completions-enabled t)
-  (eval-after-load 'company
-    '(add-to-list
-      'company-backends 'company-rtags))
   (setq rtags-autostart-diagnostics t)
   (rtags-enable-standard-keybindings)
   (require 'helm-rtags)
@@ -221,16 +218,19 @@
   (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
   (setq company-backends (delete 'company-semantic company-backends))
   (require 'company-irony-c-headers)
-  (eval-after-load 'company
-    '(add-to-list
-      'company-backends '(company-irony-c-headers company-irony)))
+  (add-hook 'c++-mode-hook
+          (lambda ()
+            (set (make-local-variable 'company-backends)
+                 (list
+                  (cons 'company-irony-c-headers 'company-irony 'company-rtags
+                        (car company-backends))))))
   (setq company-idle-delay 0)
   (define-key c-mode-map [(tab)] 'company-complete)
   (define-key c++-mode-map [(tab)] 'company-complete)
   (add-hook 'c++-mode-hook 'flycheck-mode)
   (add-hook 'c-mode-hook 'flycheck-mode)
-  (require 'flycheck-rtags)
 
+  (require 'flycheck-rtags)
   (defun my-flycheck-rtags-setup ()
     (flycheck-select-checker 'rtags)
     (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
