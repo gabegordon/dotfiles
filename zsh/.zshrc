@@ -1,8 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
- export PATH=~/.npm-global/bin:$PATH
+export PATH=~/.npm-global/bin:$PATH
+#export PATH=$PATH:~/Downloads/firefox
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/gabe/.oh-my-zsh
+ export ZSH=/home/gabe/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -86,16 +87,14 @@ setopt HIST_FIND_NO_DUPS
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias emax="emacsclient -c -n"
 alias sudo="sudo "
-alias E="SUDO_EDITOR=\"emacsclient -t -a emacs\" sudoedit"
+alias E="SUDO_EDITOR=\"emacsclient -c -a emacs\" sudoedit"
 alias susvm="sudo virsh dompmsuspend win10 mem"
 alias savevm="sudo virsh dompmsuspend win10 disk"
 alias attachvm="~/scripts/attach.sh"
 alias detachvm="~/scripts/detach.sh"
 alias sudo='nocorrect sudo'
-eval "$(thefuck --alias)"
+alias website='sudo cp -R ~/gabegordon.github.io/interactive/* /opt/lampp/htdocs/.'
 source ~/.tldr.complete
-export ALTERNATE_EDITOR=""
-export EDITOR="emacsclient -t -a emacs"
 function powerline_precmd() {
     PS1="$(~/powerline-shell.py $? --shell zsh 2> /dev/null)"
 }
@@ -112,3 +111,4 @@ function install_powerline_precmd() {
 if [ "$TERM" != "linux" ]; then
     install_powerline_precmd
 fi
+(cat ~/.cache/wal/sequences &)

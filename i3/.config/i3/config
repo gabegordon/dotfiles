@@ -3,7 +3,7 @@ floating_modifier $mod
 
 # Program hotkeys
 bindsym $mod+Return exec xfce4-terminal
-bindsym $mod+Shift+ g exec google-chrome-stable
+bindsym $mod+Shift+ g exec firefox-beta-bin
 bindsym $mod+e exec emacsclient -c -n
 bindsym $mod+m exec xfce4-terminal --title=ncmpcpp -x ncmpcpp
 bindsym $mod+space exec rofi -show run
@@ -11,6 +11,8 @@ bindsym $mod+t exec xfce4-terminal --drop-down
 bindsym $mod+a exec xfce4-terminal -x ranger
 # kill focused window
 bindsym $mod+q kill
+bindsym --release $mod+Shift+q exec xkill
+
 
 bindsym $mod+l  exec sh ~/i3lock.sh
 
@@ -104,7 +106,6 @@ exec_always --no-startup-id dunst
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec --no-startup-id emacs --daemon
 exec --no-startup-id i3-msg 'workspace 11; exec xfce4-terminal --title=ncmpcpp -x ncmpcpp; workspace 12; exec /usr/bin/thunderbird'
-exec --no-startup-id mopidy
 exec --no-startup-id xset r rate 200 50
 exec --no-startup-id synergyc 192.168.122.171
 
@@ -122,5 +123,5 @@ client.urgent               $bg-color       $bg-color       $text-color         
 
 # gaps
 for_window [class="^.*"] border pixel 3
-gaps inner 10
-gaps outer 10
+gaps inner 5
+gaps outer 2

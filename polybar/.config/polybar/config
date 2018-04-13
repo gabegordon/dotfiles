@@ -1,255 +1,175 @@
-[colors]
-foreground-alt = #758696
-bluebg = #7cd0d6
-urgbg = #fc6a6a
+[bar/top]
+monitor = eDP-1
+width = 100%
+height = 32
 
-[bar/invisbar]
-height=15
-modules-left = blank
-background = #0d000000
+background = #00000000
+foreground = #ccffffff
 
-[module/blank]
-type = custom/text
-content = "_"
-content-foreground = #0d000000
+line-size = 16
 
-[bar/bar1]
-override-redirect = true
-wm-restack = i3
-height = 30
-width = 70%
-offset-x = 15%
+spacing = 2
+padding-right = 5
+module-margin = 4
 
-background = #1f2328
-foreground = ${colors.foreground-alt}
-underline-color = #00f
-overline-color = #f00
-
-module-margin-right = 2
-module-margin-left = 2
-
-tray-position = right
-tray-detached = false
-tray-maxsize = 16
-tray-padding = 0
-tray-scale = 1
-tray-transparent = false
-tray-offset-y = 0
-tray-background = ${root.background}
-
-font-0 = FontAwesome:size=12;0
-font-1 = SourceCodeProMedium:pixelsize=14;1
+font-0 = NotoSans-Regular:size=13;-1
+font-1 = MaterialIcons:size=14;0
+font-2 = FontAwesome5Free:size=12;0
 
 modules-left = i3
-modules-center = date music
-modules-right = filesystem weather volume battery powermenu
-
-[module/weather]
-type = custom/script
-exec = ~/.config/polybar/weather
-label =|   %output%
-interval = 1800
-
-[module/title]
-type = internal/xwindow
-label = %title%
-label-maxlen = 50
+modules-right = filesystem pulseaudio memory backlight wireless-network battery date
 
 [module/filesystem]
 type = internal/fs
+
 ; Mountpoints to display
 mount-0 = /
-label-mounted = |  %percentage_free%%
-; Seconds to sleep between updates
-; Default: 30
-interval = 120
-fixed-values = true
-spacing = 4
-
-[module/music]
-type = custom/script
-interval = 2
-
-label = %output:0:45:...%
-exec = ~/.config/polybar/mpris.sh
-
-[module/volume]
-type = internal/volume
-format-volume = <ramp-volume> <label-volume>
-format-muted = <label-muted>
-label-volume =%percentage%
-
-label-muted =  muted
-label-muted-foreground = #aaa
-label-volume-padding = 0
-ramp-volume-0 =| 
-ramp-volume-1 =| 
-ramp-volume-2 =| 
-
-format-volume-foreground = ${colors.foreground-alt}
-
-[module/powermenu]
-type = custom/menu
-label-open = | |
-label-close = C
-
-menu-0-0 = reboot
-menu-0-0-exec = menu-open-1
-menu-0-1 = power off
-menu-0-1-exec = menu-open-2
-menu-0-0-padding = 1
-menu-0-1-padding = 0
-
-menu-1-0 = reboot?
-menu-1-0-exec = reboot
-menu-1-0-padding = 0
-
-menu-2-0 = power off?
-menu-2-0-exec = sudo poweroff
-menu-2-0-padding = 0
-
-[module/date]
-type = internal/date
-
-; Seconds to sleep between updates
-interval = 5
-
-; See "man date" for details on how to format the date string
-; NOTE: if you want to use syntax tags here you need to use %%{...}
-date = %d %b
-
-; Optional time format
-time = %H:%M
-
-; if `date-alt` or `time-alt` is defined, clicking
-; the module will toggle between formats
-date-alt = %A, %d %B %Y
-time-alt = %H:%M:%S
+format-mounted = <label-mounted>
 
 ; Available tags:
-;   <label> (default)
-format =  <label>
+;   <label-unmounted> (default)
+format-unmounted = <label-unmounted>
+
+label-mounted = %mountpoint%: %used% of %total%
 
 ; Available tokens:
-;   %date%
-;   %time%
-; Default: %date%
-label =|  %time% -  %date% |
-format-foreground = ${colors.foreground-alt}
+;   %mountpoint%
+; Default: %mountpoint% is not mounted
+label-unmounted = %mountpoint%: not mounted
+label-unmounted-foreground = #55
 
 [module/i3]
 type = internal/i3
 strip-wsnumbers = true
-index-sort = true
-enable-click = true
-enable-scroll = false
-wrapping-scroll = true
-reverse-scroll = false
 
-ws-icon-0 = 1;1
-ws-icon-1 = 2;2
-ws-icon-2 = 3;3
-ws-icon-3 = 4;4
-ws-icon-4 = 5;5
-ws-icon-5 = 6;6
-ws-icon-6 = 7;7
-ws-icon-7 = 8;8
-ws-icon-8 = 9;9
-ws-icon-9 = 0;10
-
-; Available tags:
-;   <label-state> (default) - gets replaced with <label-(focused|unfocused|visible|urgent)>
-;   <label-mode> (default)
 format = <label-state> <label-mode>
 
 label-mode = %mode%
 label-mode-padding = 2
 label-mode-background = #e60053
 
-label-focused = %icon%
-label-focused-background = #78a090
-label-focused-foreground = #1b2126
-label-focused-padding = 2
+label-focused = %index%
+label-focused-foreground = #ffffff
+label-focused-background = #3f3f3f
+label-focused-padding = 4
 
-label-unfocused = %icon%
-label-unfocused-foreground = ${colors.foreground-alt}
-label-unfocused-padding = 2
+label-unfocused = %index%
+label-unfocused-padding = 4
 
-label-visible = %icon%
-label-visible-padding = 2
+label-visible = %index%
+label-visible-underline = #555555
+label-visible-padding = 4
 
-label-urgent = %icon%
-label-urgent-padding = 2
+label-urgent = %index%
+label-urgent-foreground = #000000
+label-urgent-background = #bd2c40
+label-urgent-padding = 4
+
+; Separator in between workspaces
+label-separator = |
+label-separator-padding = 2
+label-separator-foreground = #ffb52a
+
+[module/pulseaudio]
+type = internal/pulseaudio
+volume-format = <ramp-volume> <label-volume>
+
+label-muted = 
+
+[module/backlight]
+type = internal/xbacklight
+format = <ramp> <bar>
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+
+bar-width = 10
+bar-indicator = |
+bar-indicator-font = 3
+bar-indicator-foreground = #ff
+bar-fill = ─
+bar-fill-font = 3
+bar-fill-foreground = #c9665e
+bar-empty = ─
+bar-empty-font = 3
+bar-empty-foreground = #44
+
+[module/date]
+type = internal/date
+date =    %%{F#99}%Y-%m-%d%%{F-}  %%{F#fff}%H:%M%%{F-}
+date-alt = %%{F#fff}%A, %d %B %Y  %%{F#fff}%H:%M%%{F#666}:%%{F#fba922}%S%%{F-}
+
+[module/memory]
+type = internal/memory
+format = <label> <bar-used>
+label = RAM
+
+bar-used-width = 20
+bar-used-foreground-0 = #aaff77
+bar-used-foreground-1 = #aaff77
+bar-used-foreground-2 = #fba922
+bar-used-foreground-3 = #ff5555
+bar-used-indicator = |
+bar-used-indicator-font = 6
+bar-used-indicator-foreground = #ff
+bar-used-fill = ─
+bar-used-fill-font = 6
+bar-used-empty = ─
+bar-used-empty-font = 6
+bar-used-empty-foreground = #444444
+
+[module/wireless-network]
+type = internal/network
+interface = wlp3s0
+interval = 3.0
+ping-interval = 10
+
+format-connected = <ramp-signal> <label-connected>
+label-connected = %essid%
+label-disconnected =    not connected
+label-disconnected-foreground = #66
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+
+[module/volume]
+type = internal/volume
+speaker-mixer = Speaker
+headphone-mixer = Headphone
+headphone-id = 9
+
+format-volume = <ramp-volume> <label-volume>
+label-muted =   muted
+label-muted-foreground = #66
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-volume-3 = 
 
 [module/battery]
 type = internal/battery
 
-; This is useful in case the battery never reports 100% charge
 full-at = 99
 
-; Use the following command to list batteries and adapters:
-; $ ls -1 /sys/class/power_supply/
 battery = BAT0
 adapter = ADP1
 
-; If an inotify event haven't been reported in this many
-; seconds, manually poll for new values.
-;
-; Needed as a fallback for systems that don't report events
-; on sysfs/procfs.
-;
-; Disable polling by setting the interval to 0.
-;
-; Default: 5
-poll-interval = 10
+format-charging = <label-charging>
 
-; Available tags:
-;   <label-charging> (default)
-;   <bar-capacity>
-;   <ramp-capacity>
-;   <animation-charging>
-format-charging = <animation-charging> <label-charging>
+format-discharging = <label-discharging>
 
-; Available tags:
-;   <label-discharging> (default)
-;   <bar-capacity>
-;   <ramp-capacity>
-format-discharging = <ramp-capacity> <label-discharging>
+label-charging = Charging %percentage%%
 
-; Available tags:
-;   <label-full> (default)
-;   <bar-capacity>
-;   <ramp-capacity>
-;format-full = <ramp-capacity> <label-full>
+label-discharging = Discharging %percentage%%
 
-; Available tokens:
-;   %percentage% (default)
-;   %time%
-label-charging = %percentage%%
-
-; Available tokens:
-;   %percentage% (default)
-;   %time%
-label-discharging = %percentage%%
-
-; Available tokens:
-;   %percentage% (default)
 label-full = Fully charged
 
-; Only applies if <ramp-capacity> is used
-ramp-capacity-0 =|
-ramp-capacity-1 =|
-ramp-capacity-2 =|
-
-; Only applies if <bar-capacity> is used
-bar-capacity-width = 10
-
-; Only applies if <animation-charging> is used
-animation-charging-0 =|
-
-; Framerate in milliseconds
-animation-charging-framerate = 750
-
-format-discharging-foreground = ${colors.foreground-alt}
-format-charging-foreground = ${colors.foreground-alt}
-format-full-foreground = ${colors.foreground-alt}
+[module/clock]
+type = internal/date
+interval = 2
+date = %%{F#999}%Y-%m-%d%%{F-}  %%{F#fff}%H:%M%%{F-}
