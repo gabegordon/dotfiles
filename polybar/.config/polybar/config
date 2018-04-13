@@ -1,10 +1,18 @@
+[colors]
+background = ${xrdb:color0:#222}
+foreground = ${xrdb:color7:#222}
+foreground-alt = ${xrdb:color7:#222}
+primary = ${xrdb:color1:#222}
+secondary = ${xrdb:color2:#222}
+alert = ${xrdb:color3:#222}
+
 [bar/top]
 monitor = eDP-1
 width = 100%
 height = 32
 
-background = #00000000
-foreground = #ccffffff
+background = ${colors.background}
+foreground = ${colors.foreground}
 
 line-size = 16
 
@@ -46,11 +54,11 @@ format = <label-state> <label-mode>
 
 label-mode = %mode%
 label-mode-padding = 2
-label-mode-background = #e60053
+label-mode-background = ${colors.primary}
 
 label-focused = %index%
-label-focused-foreground = #ffffff
-label-focused-background = #3f3f3f
+label-focused-foreground = ${colors.foreground}
+label-focused-background = ${colors.secondary}
 label-focused-padding = 4
 
 label-unfocused = %index%
@@ -68,7 +76,7 @@ label-urgent-padding = 4
 ; Separator in between workspaces
 label-separator = |
 label-separator-padding = 2
-label-separator-foreground = #ffb52a
+label-separator-foreground = ${colors.primary}
 
 [module/pulseaudio]
 type = internal/pulseaudio
