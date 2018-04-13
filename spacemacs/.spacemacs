@@ -39,17 +39,11 @@
    dotspacemacs-additional-packages '(
                                       windmove
                                       function-args
-                                      rtags
-                                      company-rtags
-                                      helm-rtags
                                       irony
                                       company-irony
                                       company-irony-c-headers
-                                      flycheck-rtags
                                       flycheck-irony
                                       helm-flycheck
-                                      cmake-ide
-                                      org-gcal
                                       evil-surround
                                       )
    dotspacemacs-frozen-packages '()
@@ -152,9 +146,27 @@
 
    ;; Shell
    shell-default-term-shell "/bin/zsh"
-  ))
+   ))
 
 (defun dotspacemacs/user-config ()
+  (setq company-frontends
+        '(company-tng-frontend
+          company-pseudo-tooltip-unless-just-one-frontend
+          company-echo-metadata-frontend
+          company-preview-frontend
+          company-quickhelp-frontend))
+
+  ;; Redefining like this works for me.
+  (defun company-preview-frontend (command)
+    "`company-mode' frontend showing the selection as if it had been inserted."
+    (pcase command
+      (`pre-command (company-preview-hide))
+      (`post-command
+       (unless (and company-selection-changed
+                    (memq 'company-tng-frontend company-frontends))
+         (company-preview-show-at-point (point)
+                                        (nth company-selection company-candidates))))
+      (`hide (company-preview-hide))))
   ;;Settings
   (spacemacs/toggle-golden-ratio-on)
   (global-centered-cursor-mode +1)
@@ -191,17 +203,7 @@
   (add-to-list 'exec-path "~/.local/bin/")
 
   ;; C-C++
-  (require 'rtags)
-  (require 'company-rtags)
 
-  (setq rtags-completions-enabled t)
-  (eval-after-load 'company
-    '(add-to-list
-      'company-backends 'company-rtags))
-  (setq rtags-autostart-diagnostics t)
-  (rtags-enable-standard-keybindings)
-  (require 'helm-rtags)
-  (setq rtags-use-helm t)
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'objc-mode-hook 'irony-mode)
@@ -215,35 +217,14 @@
   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-  (setq company-backends (delete 'company-semantic company-backends))
-  (require 'company-irony-c-headers)
   (eval-after-load 'company
     '(add-to-list
-      'company-backends '(company-irony-c-headers company-irony)))
-  (setq company-idle-delay 0)
-  (define-key c-mode-map [(tab)] 'company-complete)
-  (define-key c++-mode-map [(tab)] 'company-complete)
-  (add-hook 'c++-mode-hook 'flycheck-mode)
-  (add-hook 'c-mode-hook 'flycheck-mode)
-  (require 'flycheck-rtags)
+      'company-backends '(company-irony-c-headers company-irony company-dabbrev company-semantic)))
 
-  (defun my-flycheck-rtags-setup ()
-    (flycheck-select-checker 'rtags)
-    (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
-    (setq-local flycheck-check-syntax-automatically nil))
-  ;; c-mode-common-hook is also called by c++-mode
-  (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
-  ;; CMake
-  (cmake-ide-setup)
-
-  ;; Python
-  (add-hook 'python-mode-hook 'anaconda-mode)
-
   )
-
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 (custom-set-variables
