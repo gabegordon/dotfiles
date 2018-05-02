@@ -52,8 +52,8 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(sudo systemd)
-
+plugins=(sudo systemd vi-mode)
+bindkey -M viins 'fd' vi-cmd-mode
 source $ZSH/oh-my-zsh.sh
 setopt HIST_FIND_NO_DUPS
 
@@ -94,6 +94,7 @@ alias attachvm="~/scripts/attach.sh"
 alias detachvm="~/scripts/detach.sh"
 alias sudo='nocorrect sudo'
 alias website='sudo cp -R ~/gabegordon.github.io/interactive/* /opt/lampp/htdocs/.'
+alias upmirrors='sudo reflector --age 12 --protocol http --protocol https --sort rate --save /etc/pacman.d/mirrorlist'
 source ~/.tldr.complete
 function powerline_precmd() {
     PS1="$(~/powerline-shell.py $? --shell zsh 2> /dev/null)"

@@ -22,14 +22,14 @@ module-margin = 4
 
 font-0 = NotoSans-Regular:size=13;-1
 font-1 = MaterialIcons:size=14;0
-font-3 = FontAwesome5Free:size=12;0
-font-2 = Weather Icons:size=12;1
+font-2 = FontAwesome5Free:size=12;0
+font-3 = Weather Icons:size=12;1
 
 tray-position = center
 tray-offset-x = -30
 
-modules-left = i3 player weather
-modules-right = filesystem pulseaudio memory backlight wireless-network battery date
+modules-left = i3 player 
+modules-right = filesystem pulseaudio wireless-network battery date
 
 [module/weather]
 type = custom/script
