@@ -1,0 +1,25 @@
+compile_commands.json
+*~
+.*.swp
+.DS_Store
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+# session
+Session.vim
+# temporary
+.netrwhist
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so

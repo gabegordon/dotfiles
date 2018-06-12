@@ -1,0 +1,25 @@
+[user]
+	name = Gabe Gordon
+	email = gabegordon123@gmail.com
+[rerere]
+	enabled = true
+[color]
+	ui = auto
+[push]
+	default = matching
+[github]
+	user = gabegordon
+[core]
+	autocrlf = false
+	safecrlf = true
+	editor = emacs
+[alias]
+	co = checkout
+    ci = commit
+	st = status
+	br = branch
+	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+	type = cat-file -t
+	dump = cat-file -p
+[core]
+    excludesfile = /home/user/.gitignore_global

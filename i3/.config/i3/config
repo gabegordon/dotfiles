@@ -1,4 +1,4 @@
-set $mod Mod4
+set $mod Mod1
 floating_modifier $mod
 
 # Program hotkeys
@@ -120,19 +120,17 @@ exec --no-startup-id synergyc 192.168.122.171
 # client.unfocused            $bg-color       $bg-color       $inactive-text-color $bg-color  $bg-color
 # client.focused_inactive     $bg-color       $bg-color       $inactive-text-color $bg-color  $bg-color
 # client.urgent               $bg-color       $bg-color       $text-color          $bg-color  $bg-color
-set_from_resource $fg i3wm.color7 #f0f0f0
-set_from_resource $bg i3wm.color2 #f0f0f0
+#set_from_resource $fg i3wm.color7 #f0f0f0
+#set_from_resource $bg i3wm.color2 #f0f0f0
 
 # class                 border  backgr. text indicator child_border
-client.focused          $bg     $bg     $fg  $bg       $bg
-client.focused_inactive $bg     $bg     $fg  $bg       $bg
-client.unfocused        $bg     $bg     $fg  $bg       $bg
-client.urgent           $bg     $bg     $fg  $bg       $bg
-client.placeholder      $bg     $bg     $fg  $bg       $bg
+#client.focused          $bg     $bg     $fg  $bg       $bg
+#client.focused_inactive $bg     $bg     $fg  $bg       $bg
+#client.unfocused        $bg     $bg     $fg  $bg       $bg
+#client.urgent           $bg     $bg     $fg  $bg       $bg
+#client.placeholder      $bg     $bg     $fg  $bg       $bg
 
-client.background       $bg
+#client.background       $bg
 
 # gaps
-for_window [class="^.*"] border pixel 3
-gaps inner 5
-gaps outer 2
+#for_window [class="^.*"] border pixel 3
