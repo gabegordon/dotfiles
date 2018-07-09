@@ -53,6 +53,8 @@
                                       android-mode
                                       bm
                                       evil-mc
+                                      symon
+                                      clang-format
                                       )
    dotspacemacs-frozen-packages '()
    dotspacemacs-excluded-packages '(tern exec-path-from-shell)
@@ -73,11 +75,11 @@
    dotspacemacs-scratch-mode 'text-mode
    dotspacemacs-themes '(material)
    dotspacemacs-colorize-cursor-according-to-state t
-   dotspacemacs-default-font '("Source Code Pro"
+   dotspacemacs-default-font '("Office Code Pro"
                                :size 16
                                :weight normal
                                :width normal
-                               :powerline-scale 1.15)
+                               :powerline-scale 1.0)
    dotspacemacs-leader-key "SPC"
    dotspacemacs-emacs-command-key "SPC"
    dotspacemacs-ex-command-key ":"
@@ -110,7 +112,7 @@
    dotspacemacs-inactive-transparency 90
    dotspacemacs-show-transient-state-title t
    dotspacemacs-show-transient-state-color-guide t
-   dotspacemacs-mode-line-unicode-symbols t
+   dotspacemacs-mode-line-unicode-symbols nil
    dotspacemacs-smooth-scrolling t
    dotspacemacs-line-numbers 'relative
    dotspacemacs-folding-method 'evil
@@ -157,21 +159,26 @@
    ))
 
 (defun dotspacemacs/user-config ()
+
+  ;; Settings
+  (spacemacs/toggle-golden-ratio-on)
+  (global-centered-cursor-mode +1)
+  (yas-global-mode 1)
+  (set-default 'semantic-case-fold t)
+  (helm-autoresize-mode 1)
+  (global-set-key (kbd "<C-f2>") 'bm-toggle)
+  (global-set-key (kbd "<f2>")   'bm-next)
+  (global-set-key (kbd "<S-f2>") 'bm-previous)
+  (setq bm-cycle-all-buffers t)
+  (global-evil-mc-mode  1)
+
+  ;; Company Complete
   (setq company-frontends
         '(company-tng-frontend
           company-pseudo-tooltip-unless-just-one-frontend
           company-echo-metadata-frontend
           company-preview-frontend
           company-quickhelp-frontend))
-
-  (helm-autoresize-mode 1)
-  (global-set-key (kbd "<C-f2>") 'bm-toggle)
-  (global-set-key (kbd "<f2>")   'bm-next)
-  (global-set-key (kbd "<S-f2>") 'bm-previous)
-  (setq bm-cycle-all-buffers t)
-  (global-evil-mc-mode  1) ;; enable
-
-  ;; Redefining like this works for me.
   (defun company-preview-frontend (command)
     "`company-mode' frontend showing the selection as if it had been inserted."
     (pcase command
@@ -182,11 +189,6 @@
          (company-preview-show-at-point (point)
                                         (nth company-selection company-candidates))))
       (`hide (company-preview-hide))))
-  ;;Settings
-  (spacemacs/toggle-golden-ratio-on)
-  (global-centered-cursor-mode +1)
-  (yas-global-mode 1)
-  (set-default 'semantic-case-fold t)
 
   ;; Windmove
   (windmove-default-keybindings)
@@ -197,7 +199,6 @@
   (setq rtags-use-helm t)
 
   ;; Clang format
-  (require 'clang-format)
   (global-set-key (kbd "C-c i") 'clang-format-region)
   (global-set-key (kbd "C-c u") 'clang-format-buffer)
   (setq clang-format-style-option "google")
@@ -218,7 +219,6 @@
   (add-to-list 'exec-path "~/.local/bin/")
 
   ;; C-C++
-
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'objc-mode-hook 'irony-mode)
@@ -239,6 +239,7 @@
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
+  ;; Format Guessing
   (add-to-path 'load-path "/home/WAVERELAY/ggordon/guess-style.el")
   (autoload 'guess-style-set-variable "guess-style" nil t)
   (autoload 'guess-style-guess-variable "guess-style")
