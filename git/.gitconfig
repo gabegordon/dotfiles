@@ -4,7 +4,7 @@
 [rerere]
 	enabled = true
 [color]
-	ui = auto
+	ui = true
 [push]
 	default = matching
 [github]
@@ -12,14 +12,31 @@
 [core]
 	autocrlf = false
 	safecrlf = true
-	editor = emacs
+	editor = vim
 [alias]
 	co = checkout
-    ci = commit
+  ci = commit
 	st = status
 	br = branch
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 	type = cat-file -t
 	dump = cat-file -p
 [core]
-    excludesfile = /home/user/.gitignore_global
+	excludesfile = ~/.gitignore_global
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+[diff-so-fancy]
+	markEmptyLines = false
+[pull]
+	rebase = true

@@ -23,3 +23,8 @@ Session.vim
 *.exe
 *.o
 *.so
+.idea/caches/
+.idea/codeStyles/
+.idea
+.idea/*
+.idea/
