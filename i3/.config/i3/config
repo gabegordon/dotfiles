@@ -3,7 +3,7 @@ floating_modifier $mod
 
 # Program hotkeys
 bindsym $mod+Return exec xfce4-terminal
-bindsym $mod+Shift+ g exec firefox-beta-bin
+bindsym $mod+Shift+f exec firefox
 bindsym $mod+e exec emacsclient -c -n
 bindsym $mod+m exec xfce4-terminal --title=ncmpcpp -x ncmpcpp
 bindsym $mod+space exec rofi -show run
@@ -46,10 +46,17 @@ bindsym $mod+s layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 
+set $ws1 "1:web"
+set $ws2 "2:emacs"
+set $ws3 "3:build"
+set $ws11 "11:music"
+set $ws12 "12:mail"
+set $ws13 "13:rtags"
+set $ws14 "14:git"
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
 bindsym $mod+4 workspace 4
 bindsym $mod+5 workspace 5
 bindsym $mod+6 workspace 6
@@ -57,20 +64,25 @@ bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
-bindsym $mod+Shift+m workspace 11
-bindsym $mod+Shift+n workspace 12
-bindsym $mod+Shift+b workspace 13
+bindsym $mod+Shift+m workspace $ws11
+bindsym $mod+Shift+n workspace $ws12
+bindsym $mod+Shift+b workspace $ws13
+bindsym $mod+Shift+g workspace $ws14
+
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
 bindsym $mod+Shift+4 move container to workspace 4
 bindsym $mod+Shift+5 move container to workspace 5
 bindsym $mod+Shift+6 move container to workspace 6
 bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
+bindsym $mod+Ctrl+Shift+m move container to workspace $ws11
+bindsym $mod+Ctrl+Shift+n move container to workspace $ws12
+bindsym $mod+Ctrl+Shift+b move container to workspace $ws13
+bindsym $mod+Ctrl+Shift+g move container to workspace $ws14
 # reload the configuration file
 bindsym $mod+Shift+c reload
 
