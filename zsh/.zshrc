@@ -49,7 +49,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(sudo systemd colored-man-pages colorize cp copydir dirpersist extract history gitignore github)
+plugins=(sudo systemd colored-man-pages colorize cp copydir dirpersist extract history gitignore git)
 source $ZSH/oh-my-zsh.sh
 setopt HIST_FIND_NO_DUPS
 
