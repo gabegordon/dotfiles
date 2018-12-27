@@ -3,16 +3,14 @@ floating_modifier $mod
 
 # Program hotkeys
 bindsym $mod+Return exec xfce4-terminal
-bindsym $mod+Shift+ g exec firefox-beta-bin
+bindsym $mod+Shift+ g exec firefox
 bindsym $mod+e exec emacsclient -c -n
-bindsym $mod+m exec xfce4-terminal --title=ncmpcpp -x ncmpcpp
 bindsym $mod+space exec rofi -show run
 bindsym $mod+t exec xfce4-terminal --drop-down
 bindsym $mod+a exec xfce4-terminal -x ranger
 # kill focused window
 bindsym $mod+q kill
 bindsym --release $mod+Shift+q exec xkill
-
 
 bindsym $mod+l  exec sh ~/i3lock.sh
 
@@ -100,14 +98,18 @@ for_window [window_role="task_dialog"] floating enable
 
 # autostarts
 exec_always --no-startup-id feh --bg-fill /home/gabe/sam.png
-exec --no-startup-id xbindkeys
 exec --no-startup-id ~/.config/i3/compton.sh
 exec_always --no-startup-id dunst
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec --no-startup-id emacs --daemon
-exec --no-startup-id i3-msg 'workspace 11; exec xfce4-terminal --title=ncmpcpp -x ncmpcpp; workspace 12; exec /usr/bin/thunderbird'
 exec --no-startup-id xset r rate 200 50
-exec --no-startup-id synergyc 192.168.122.171
+exec --no-startup-id xautolock -time 15 -locker $HOME/i3lock.sh -detectsleep
+
+bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer --increase 5
+bindsym XF86AudioLowerVolume exec --no-startup-id pamixer --decrease 5
+bindsym XF86AudioMute exec --no-startup-id pamixer -t
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 1
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 1
 
 # set $bg-color            #383C4A
 # set $bd-color            #424851
@@ -133,4 +135,6 @@ exec --no-startup-id synergyc 192.168.122.171
 #client.background       $bg
 
 # gaps
-#for_window [class="^.*"] border pixel 3
+for_window [class="^.*"] border pixel 3
+gaps inner 1
+gaps outer 1

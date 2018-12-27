@@ -1,6 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # Path to your oh-my-zsh installation.
- export ZSH=/home/WAVERELAY/ggordon/.oh-my-zsh
+ export ZSH=/home/gabe/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -111,7 +111,6 @@ alias ..='cd ..'
 alias addpath='export PATH=$PATH:/home/WAVERELAY/ggordon/toolchain/bin'
 alias setenv='source ~/android-repo/ps/ps-build/env.source'
 
-source ~/.tldr.complete
 alias sudo='sudo '
 alias rem='adb shell reboot'
 alias serial='adb shell /system/vendor/sbin/fw_setenv console ttymxc2'
