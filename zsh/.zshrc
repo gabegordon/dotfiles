@@ -1,11 +1,12 @@
 # If you come from bash you might have to change your $PATH.
+#
 # Path to your oh-my-zsh installation.
- export ZSH=/home/WAVERELAY/ggordon/.oh-my-zsh
+ export ZSH=/home/ggordon/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME=agnoster
+ZSH_THEME="af-magic"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -52,7 +53,23 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(sudo systemd colored-man-pages colorize cp copydir dirpersist extract history gitignore git)
 source $ZSH/oh-my-zsh.sh
 setopt HIST_FIND_NO_DUPS
-
+setopt autopushd
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000000
+SAVEHIST=10000000
+setopt BANG_HIST                 # Treat the '!' character specially during expansion.
+setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY             # Share history between all sessions.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
+setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
+setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
+setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space.
+setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
+setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
+setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
+setopt HIST_BEEP                 # Beep when accessing nonexistent history.
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -60,6 +77,11 @@ setopt HIST_FIND_NO_DUPS
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
+source "${HOME}/.zgen/zgen.zsh"
+zgen load fdw/ranger_autojump
+[[ -s /home/ggordon/.autojump/etc/profile.d/autojump.sh ]] && source /home/ggordon/.autojump/etc/profile.d/autojump.sh
+
+autoload -U compinit && compinit -u
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
@@ -84,37 +106,45 @@ setopt HIST_FIND_NO_DUPS
 alias emax="emacsclient -c -n"
 alias sudo="sudo "
 alias E="SUDO_EDITOR=\"emacsclient -c -a emacs\" sudoedit"
-alias susvm="sudo virsh dompmsuspend win10 mem"
-alias savevm="sudo virsh dompmsuspend win10 disk"
-alias attachvm="~/scripts/attach.sh"
-alias detachvm="~/scripts/detach.sh"
-alias website='sudo cp -R ~/gabegordon.github.io/interactive/* /opt/lampp/htdocs/.'
-alias upmirrors='sudo reflector --age 12 --protocol http --protocol https --sort rate --save /etc/pacman.d/mirrorlist'
 alias cerbero='/opt/cerbero/cerbero-uninstalled'
-export PATH=$PATH:/home/WAVERELAY/ggordon/android-repo/ps/ps-build/bin
-export PATH=$PATH:/home/WAVERELAY/ggordon/gerrit/ps-tools/bin
-#export PATH=$PATH:/home/WAVERELAY/ggordon/android-ndk-r9d/toolchain/bin
-export PATH=$PATH:/home/WAVERELAY/ggordon/android-ndk-r9d/
-export PATH=$PATH:/home/WAVERELAY/ggordon/Downloads/android-studio/bin
-export PATH=$PATH:/home/WAVERELAY/ggordon/.local/bin
+export PATH=$PATH:/home/ggordon/android-repo/ps/ps-build/bin
+export PATH=$PATH:/home/ggordon/ps-tools/bin
+export PATH=$PATH:/home/ggordon/Downloads/rtags/bin
+#export PATH=$PATH:/home/ggordon/ndk/toolchain/bin
 alias gbuild='adb remount && cd /home/WAVERELAY/ggordon/android-repo/ps/ps-build && source env.source && cd ../visualization && mps e2 && mps e21&& cd ../wrservices && mps e2 && mps e21 && cd ../management && mps e2 && mps e21'
-export PATH=$HOME/local/mypax:$PATH
 alias msbuild='bash ~/msbuild'
 alias sudo='sudo '
 alias ..='cd ..'
-alias ml='adb wait-for-device shell cat /var/log/media.log'
-alias mlt='adb wait-for-device shell busybox tail -f /var/log/media.log'
-alias wl='adb wait-for-device shell cat /var/log/waverelay.log'
-alias wlt='adb wait-for-device shell  busybox tail -f /var/log/waverelay.log'
-alias wrt='adb wait-for-device shell  busybox tail -f /var/log/wrsa.log'
+alias ml='cat /var/log/media.log'
+alias mlt='busybox tail -f /var/log/media.log'
+alias wl1='adb -s 30381 shell cat /var/log/waverelay.log'
+alias wlt2='adb -s 18561 busybox tail -f /var/log/waverelay.log'
+alias wl2='adb -s 18561 shell cat /var/log/waverelay.log'
+alias wlt1='adb -s 30381 busybox tail -f /var/log/waverelay.log'
+
+alias wrt='busybox tail -f /var/log/wrsa.log'
 alias ..='cd ..'
 alias addpath='export PATH=$PATH:/home/WAVERELAY/ggordon/toolchain/bin'
-alias setenv='source ~/android-repo/ps/ps-build/env.source'
+alias setenv='source ~/repo/ps/ps-build/env.source'
 
-source ~/.tldr.complete
-alias sudo='sudo '
-alias rem='adb shell reboot'
+alias reb='adb shell reboot'
 alias serial='adb wait-for-device shell /system/vendor/sbin/fw_setenv console ttymxc2'
 alias ib="adb wait-for-device remount && mps e21 && adb shell sed -i 's/printk off/printk on/g' /system/vendor/sbin/waverelay.sh"
 alias as='adb wait-for-device shell'
 alias sudo='nocorrect sudo'
+alias capslock='setxkbmap -layout us -option ctrl:nocaps'
+alias r2s='adb -s 18561 wait-for-device shell'
+alias r1s='adb -s 30381 wait-for-device shell'
+alias r2='adb -s 18561 wait-for-device'
+alias r1='adb -s 30381 wait-for-device'
+alias compfix="sed -i \'s|\"command\": \"cc|\"command\": \"arm-linux-androideabi-gcc|g\' compile_commands.json"
+alias pushboth='r1 remount && r2 remount && mps4 e21 && r1 reboot && r2 reboot'
+alias perm="stat -c '%a %n' *"
+alias cls="ls -lha --color=always -F --group-directories-first |awk '{k=0;s=0;for(i=0;i<=8;i++){;k+=((substr(\$1,i+2,1)~/[rwxst]/)*2^(8-i));};j=4;for(i=4;i<=10;i+=3){;s+=((substr(\$1,i,1)~/[stST]/)*j);j/=2;};if(k){;printf(\"%0o%0o \",s,k);};print;}'"
+alias bp="cd ~/android-repo/ps/ps-build && source env.source && popd"
+alias ndk="PATH=$PATH:/home/ggordon/ndk/toolchain/bin"
+source ~/.tldr.complete
+alias gkk="gk &"
+alias grh="git reset --hard HEAD"
+alias rtags="mps clean && bear mps e2 && rc -J ."
+alias med="mps4 e21 && (mps clean > /dev/null; nohup bear mps4 e2 > /dev/null 2>&1; rc -J . > /dev/null) &"

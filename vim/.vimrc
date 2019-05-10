@@ -1,5 +1,5 @@
 set autoindent
-set rnu
+set nu
 imap fd <Esc>
 syntax on
 set clipboard=unnamedplus
@@ -7,13 +7,13 @@ set encoding=utf-8
 set ruler
 
 set wrap
-set textwidth=79
 set formatoptions=tcqrn1
 set tabstop=2
 set shiftwidth=2
-set softtabstop=2
-set expandtab
+set softtabstop=-1
+set noexpandtab
 set noshiftround
+setglobal modeline
 
 set scrolloff=3
 set backspace=indent,eol,start
@@ -37,6 +37,8 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-sleuth'
+Plug 'Valloric/YouCompleteMe'
 
 call plug#end()
 let g:airline_theme='base16'
