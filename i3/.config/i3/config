@@ -2,7 +2,7 @@ set $mod Mod1
 floating_modifier $mod
 
 # Program hotkeys
-bindsym $mod+Return exec xfce4-terminal
+bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+f exec firefox
 bindsym $mod+e exec emacsclient -c -n
 bindsym $mod+space exec rofi -show run

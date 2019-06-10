@@ -7,55 +7,31 @@
    '(
      (auto-completion
       :variables
-      auto-completion-enable-snippets-in-popup t
       auto-completion-tab-key-behavior 'cycle
       auto-completion-enable-help-tooltip t
       auto-completion-enable-sort-by-usage t
       :disabled-for org erc)
      (c-c++ :variables
-            c-c++-default-mode-for-headers 'c++-mode
-            c-c++-enable-google-newline t
-            c-c++-enable-google-style t
-            c-c++-backend 'rtags
-            c-c++-enable-rtags-completion nil)
+            c-c++-backend 'lsp-ccls)
      csv
      emacs-lisp
-     erc
      (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
      git
-     github
-     haskell
      html
      javascript
-     (latex :variables latex-enable-auto-fill t)
      markdown
      org
      python
-     (ranger :variables ranger-override-dired t)
      (semantic :disabled-for emacs-lisp)
-     (shell :variables shell-default-shell 'eshell)
-     (spell-checking :variables spell-checking-enable-by-default nil)
-     syntax-checking
-     (version-control :variables version-control-diff-tool 'diff-hl)
      yaml
      )
    dotspacemacs-additional-packages '(
                                       windmove
-                                      function-args
-                                      irony
-                                      company-irony
-                                      company-irony-c-headers
-                                      flycheck-irony
-                                      helm-flycheck
+																			function-args
                                       evil-surround
                                       helm-rtags
                                       android-mode
                                       bm
-                                      evil-mc
-                                      symon
-                                      clang-format
-                                      sr-speedbar
-                                      function-args
                                       tabify
                                       dtrt-indent
                                       )
@@ -78,9 +54,9 @@
    dotspacemacs-scratch-mode 'text-mode
    dotspacemacs-themes '(material)
    dotspacemacs-colorize-cursor-according-to-state t
-   dotspacemacs-default-font '("Fira Mono"
-                               :size 16
-                               :weight normal
+   dotspacemacs-default-font '("Office Code Pro D"
+                               :size 19
+                               :weight light
                                :width normal
                                :powerline-scale 1.)
    dotspacemacs-leader-key "SPC"
@@ -132,9 +108,7 @@
   (setq-default
    ;; Misc.
    vc-follow-symlinks t
-   ;; indent-tabs-mode nil
-   (setq-default tab-width 4)
-   ;; org-format-latex-options (plist-put org-format-latex-options :scale 6.0)
+   indent-tabs-mode t
 
    ;; Backups
    backup-directory-alist `((".*" . ,temporary-file-directory))
@@ -143,15 +117,7 @@
    delete-old-versions t
    kept-new-versions 6
    kept-old-versions 2
-   make-backup-files nil
-
-   ;; Documentation
-   spacemacs-space-doc-modificators
-   '(org-indent-mode
-     alternative-tags-look
-     link-protocol
-     org-kbd-face-remap
-     resize-inline-images)
+   make-backup-files t
 
    ;; Magit
    magit-popup-show-common-commands nil
@@ -171,35 +137,34 @@
 
   (add-hook 'mouse-leave-buffer-hook #'kill-minibuffer)
 
+
   ;; Settings
   (spacemacs/toggle-golden-ratio-on)
   (global-centered-cursor-mode +1)
-  (yas-global-mode 1)
   (set-default 'semantic-case-fold t)
   ;; (helm-autoresize-mode 1)
   (global-set-key (kbd "<C-f2>") 'bm-toggle)
   (global-set-key (kbd "<f2>")   'bm-next)
   (global-set-key (kbd "<S-f2>") 'bm-previous)
   (setq bm-cycle-all-buffers t)
-  (global-evil-mc-mode  1)
 
   ;; Company Complete
-  (setq company-frontends
-        '(company-tng-frontend
-          company-pseudo-tooltip-unless-just-one-frontend
-          company-echo-metadata-frontend
-          company-preview-frontend
-          company-quickhelp-frontend))
-  (defun company-preview-frontend (command)
-    "`company-mode' frontend showing the selection as if it had been inserted."
-    (pcase command
-      (`pre-command (company-preview-hide))
-      (`post-command
-       (unless (and company-selection-changed
-                    (memq 'company-tng-frontend company-frontends))
-         (company-preview-show-at-point (point)
-                                        (nth company-selection company-candidates))))
-      (`hide (company-preview-hide))))
+  ;; (setq company-frontends
+  ;;       '(company-tng-frontend
+  ;;         company-pseudo-tooltip-unless-just-one-frontend
+  ;;         company-echo-metadata-frontend
+  ;;         company-preview-frontend
+  ;;         company-quickhelp-frontend))
+  ;; (defun company-preview-frontend (command)
+  ;;   "`company-mode' frontend showing the selection as if it had been inserted."
+  ;;   (pcase command
+  ;;     (`pre-command (company-preview-hide))
+  ;;     (`post-command
+  ;;      (unless (and company-selection-changed
+  ;;                   (memq 'company-tng-frontend company-frontends))
+  ;;        (company-preview-show-at-point (point)
+  ;;                                       (nth company-selection company-candidates))))
+  ;;     (`hide (company-preview-hide))))
 
   ;; Windmove
   (windmove-default-keybindings)
@@ -207,12 +172,11 @@
   (add-hook 'org-shiftleft-final-hook 'windmove-left)
   (add-hook 'org-shiftdown-final-hook 'windmove-down)
   (add-hook 'org-shiftright-final-hook 'windmove-right)
-  (setq rtags-use-helm t)
 
   ;; Clang format
-  (global-set-key (kbd "C-c i") 'clang-format-region)
-  (global-set-key (kbd "C-c u") 'clang-format-buffer)
-  (setq clang-format-style-option "google")
+  ;; (global-set-key (kbd "C-c i") 'clang-format-region)
+  ;; (global-set-key (kbd "C-c u") 'clang-format-buffer)
+  ;; (setq clang-format-style-option "google")
 
   ;;Org
   (setq org-agenda-files (list "~/Dropbox/Org/Agenda.org"))
@@ -226,55 +190,66 @@
           ))
 
   ;; Haskell
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-  (add-to-list 'exec-path "~/.local/bin/")
+  ;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+  ;; (add-to-list 'exec-path "~/.local/bin/")
 
-  C-C++
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'objc-mode-hook 'irony-mode)
+  ;; (add-hook 'c++-mode-hook 'irony-mode)
+  ;; (add-hook 'c-mode-hook 'irony-mode)
+  ;; (add-hook 'objc-mode-hook 'irony-mode)
 
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
+  ;; (defun my-irony-mode-hook ()
+  ;;   (define-key irony-mode-map [remap completion-at-point]
+  ;;     'irony-completion-at-point-async)
+  ;;   (define-key irony-mode-map [remap complete-symbol]
+  ;;     'irony-completion-at-point-async))
 
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-  (eval-after-load 'company
-    '(add-to-list
-      'company-backends '(company-irony-c-headers company-irony company-dabbrev company-semantic)))
+  ;; (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  ;; (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  ;; (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+  ;; (eval-after-load 'company
+  ;;   '(add-to-list
+  ;;     'company-backends '(company-irony-c-headers company-irony company-dabbrev company-semantic)))
 
-  (eval-after-load 'flycheck
-    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+  ;; (eval-after-load 'flycheck
+  ;;   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
   ;; Format Guessing
-  (require 'tabify)
-  (require 'dtrt-indent)
+  (setq c-default-style "stroustrup")
+  (defun endless/c-hook ()
+    (setq indent-tabs-mode t)
+    (setq-default indent-tabs-mode t))
+  (add-hook 'c-mode-hook #'endless/c-hook)
+  (add-hook 'c++-mode-hook #'endless/c-hook)
+  (add-hook 'c-mode-hook
+            (lambda ()
+              (editorconfig-mode 0)))
+  (add-hook 'c++-mode-hook
+            (lambda ()
+              (editorconfig-mode 0)))
 
-  (require 'sr-speedbar)
-  (setq speedbar-frame-parameters
-        '((minibuffer)
-          (width . 1)
-          (border-width . 0)
-          (menu-bar-lines . 0)
-          (tool-bar-lines . 0)
-          (unsplittable . t)
-          (left-fringe . 0)))
-  (setq sr-speedbar-max-width 1)
-  (when window-system
-    (defadvice sr-speedbar-open (after sr-speedbar-open-resize-frame activate)
-      (set-frame-width (selected-frame)
-                       (+ (frame-width) sr-speedbar-width)))
-    (ad-enable-advice 'sr-speedbar-open 'after 'sr-speedbar-open-resize-frame)
 
-    (defadvice sr-speedbar-close (after sr-speedbar-close-resize-frame activate)
-      (sr-speedbar-recalculate-width)
-      (set-frame-width (selected-frame)
-                       (- (frame-width) sr-speedbar-width)))
-    (ad-enable-advice 'sr-speedbar-close 'after 'sr-speedbar-close-resize-frame))
+
+  ;; (require 'sr-speedbar)
+  ;; (setq speedbar-frame-parameters
+  ;;       '((minibuffer)
+  ;;         (width . 1)
+  ;;         (border-width . 0)
+  ;;         (menu-bar-lines . 0)
+  ;;         (tool-bar-lines . 0)
+  ;;         (unsplittable . t)
+  ;;         (left-fringe . 0)))
+  ;; (setq sr-speedbar-max-width 1)
+  ;; (when window-system
+  ;;   (defadvice sr-speedbar-open (after sr-speedbar-open-resize-frame activate)
+  ;;     (set-frame-width (selected-frame)
+  ;;                      (+ (frame-width) sr-speedbar-width)))
+  ;;   (ad-enable-advice 'sr-speedbar-open 'after 'sr-speedbar-open-resize-frame)
+
+  ;;   (defadvice sr-speedbar-close (after sr-speedbar-close-resize-frame activate)
+  ;;     (sr-speedbar-recalculate-width)
+  ;;     (set-frame-width (selected-frame)
+  ;;                      (- (frame-width) sr-speedbar-width)))
+  ;;   (ad-enable-advice 'sr-speedbar-close 'after 'sr-speedbar-close-resize-frame))
   (fa-config-default)
   (set-default 'semantic-case-fold t)
   )
@@ -293,7 +268,7 @@
  '(evil-want-Y-yank-to-eol t)
  '(package-selected-packages
    (quote
-    (symon sr-speedbar org-category-capture org-mime bm android-mode xresources-theme auctex-latexmk stickyfunc-enhance srefactor ranger pdf-tools tablist origami magit-gh-pulls github-search github-clone github-browse-file git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht diff-hl company-quickhelp company-auctex auctex xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode spotify helm-spotify multi erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks org-gcal evil-snipe spray gmail-message-mode ham-mode html-to-markdown flymd edit-server beacon web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data wolfram-mode thrift stan-mode scad-mode qml-mode matlab-mode julia-mode mmm-mode markdown-toc markdown-mode gh-md csv-mode flycheck-rtags flycheck-irony company-irony-c-headers cmake-ide levenshtein helm-rtags company-rtags rtags yaml-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic zenburn-theme flyspell-correct-helm flyspell-correct auto-dictionary google-c-style flymake-google-cpplint flymake-easy flymake-cursor clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu cider seq queue clojure-mode swiper ivy function-args smeargle orgit magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit with-editor zonokai-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pastels-on-dark-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme firebelly-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme flycheck-ycmd company-ycmd ycmd request-deferred let-alist deferred monokai-theme org-projectile org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot intero hlint-refactor hindent helm-hoogle haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode winum powerline spinner hydra parent-mode projectile fuzzy pkg-info epl flx smartparens iedit anzu evil goto-chg undo-tree highlight f s diminish irony bind-map bind-key packed dash helm avy helm-core async popup buffer-move company-irony helm-flycheck flycheck-pos-tip pos-tip flycheck helm-company helm-c-yasnippet disaster company-statistics company-c-headers company cmake-mode clang-format auto-yasnippet yasnippet ac-ispell auto-complete ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline restart-emacs request rainbow-delimiters quelpa popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
+    (symon sr-speedbar org-category-capture org-mime bm android-mode xresources-theme auctex-latexmk stickyfunc-enhance srefactor ranger pdf-tools tablist origami magit-gh-pulls github-search github-clone github-browse-file git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht diff-hl company-quickhelp company-auctex auctex xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode spotify helm-spotify multi erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks org-gcal evil-snipe spray gmail-message-mode ham-mode html-to-markdown flymd edit-server beacon web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data wolfram-mode thrift stan-mode scad-mode qml-mode matlab-mode julia-mode mmm-mode markdown-toc markdown-mode gh-md csv-mode flycheck-rtags flycheck-irony company-irony-c-headers cmake-ide levenshtein helm-rtags company-rtags rtags yaml-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic zenburn-theme flyspell-correct-helm flyspell-correct auto-dictionary flymake-google-cpplint flymake-easy flymake-cursor clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu cider seq queue clojure-mode swiper ivy function-args smeargle orgit magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit with-editor zonokai-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pastels-on-dark-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme firebelly-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme flycheck-ycmd company-ycmd ycmd request-deferred let-alist deferred monokai-theme org-projectile org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot intero hlint-refactor hindent helm-hoogle haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode winum powerline spinner hydra parent-mode projectile fuzzy pkg-info epl flx smartparens iedit anzu evil goto-chg undo-tree highlight f s diminish irony bind-map bind-key packed dash helm avy helm-core async popup buffer-move company-irony helm-flycheck flycheck-pos-tip pos-tip flycheck helm-company helm-c-yasnippet disaster company-statistics company-c-headers company cmake-mode clang-format auto-yasnippet yasnippet ac-ispell auto-complete ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline restart-emacs request rainbow-delimiters quelpa popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -318,8 +293,7 @@ This function is called at the very end of Spacemacs initialization."
  '(evil-want-Y-yank-to-eol t)
  '(package-selected-packages
    (quote
-    (dtrt-indent symon sr-speedbar org-category-capture org-mime bm android-mode xresources-theme auctex-latexmk stickyfunc-enhance srefactor ranger pdf-tools tablist origami magit-gh-pulls github-search github-clone github-browse-file git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht diff-hl company-quickhelp company-auctex auctex xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode spotify helm-spotify multi erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks org-gcal evil-snipe spray gmail-message-mode ham-mode html-to-markdown flymd edit-server beacon web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data wolfram-mode thrift stan-mode scad-mode qml-mode matlab-mode julia-mode mmm-mode markdown-toc markdown-mode gh-md csv-mode flycheck-rtags flycheck-irony company-irony-c-headers cmake-ide levenshtein helm-rtags company-rtags rtags yaml-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic zenburn-theme flyspell-correct-helm flyspell-correct auto-dictionary google-c-style flymake-google-cpplint flymake-easy flymake-cursor clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu cider seq queue clojure-mode swiper ivy function-args smeargle orgit magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit with-editor zonokai-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pastels-on-dark-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme firebelly-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme flycheck-ycmd company-ycmd ycmd request-deferred let-alist deferred monokai-theme org-projectile org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot intero hlint-refactor hindent helm-hoogle haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode winum powerline spinner hydra parent-mode projectile fuzzy pkg-info epl flx smartparens iedit anzu evil goto-chg undo-tree highlight f s diminish irony bind-map bind-key packed dash helm avy helm-core async popup buffer-move company-irony helm-flycheck flycheck-pos-tip pos-tip flycheck helm-company helm-c-yasnippet disaster company-statistics company-c-headers company cmake-mode clang-format auto-yasnippet yasnippet ac-ispell auto-complete ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline restart-emacs request rainbow-delimiters quelpa popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
- '(tab-width 4))
+    (lsp-ui cquery company-lsp ccls lsp-mode symon sr-speedbar org-category-capture org-mime bm android-mode xresources-theme auctex-latexmk stickyfunc-enhance srefactor ranger pdf-tools tablist origami magit-gh-pulls github-search github-clone github-browse-file git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht diff-hl company-quickhelp company-auctex auctex xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode spotify helm-spotify multi erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks org-gcal evil-snipe spray gmail-message-mode ham-mode html-to-markdown flymd edit-server beacon web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data wolfram-mode thrift stan-mode scad-mode qml-mode matlab-mode julia-mode mmm-mode markdown-toc markdown-mode gh-md csv-mode flycheck-rtags flycheck-irony company-irony-c-headers cmake-ide levenshtein helm-rtags company-rtags rtags yaml-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic zenburn-theme flyspell-correct-helm flyspell-correct auto-dictionary flymake-google-cpplint flymake-easy flymake-cursor clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu cider seq queue clojure-mode swiper ivy function-args smeargle orgit magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit with-editor zonokai-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pastels-on-dark-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme firebelly-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme flycheck-ycmd company-ycmd ycmd request-deferred let-alist deferred monokai-theme org-projectile org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot intero hlint-refactor hindent helm-hoogle haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode winum powerline spinner hydra parent-mode projectile fuzzy pkg-info epl flx smartparens iedit anzu evil goto-chg undo-tree highlight f s diminish irony bind-map bind-key packed dash helm avy helm-core async popup buffer-move company-irony helm-flycheck flycheck-pos-tip pos-tip flycheck helm-company helm-c-yasnippet disaster company-statistics company-c-headers company cmake-mode clang-format auto-yasnippet yasnippet ac-ispell auto-complete ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline restart-emacs request rainbow-delimiters quelpa popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
