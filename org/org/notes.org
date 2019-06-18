@@ -1,0 +1,20 @@
+* Tasks
+* Snippets
+* Notes
+** :WR-3772:
+*** GstUDPSrcTimeout is printed by gstreamer-player
+*** Only happens when no stream is present
+*** Looks like issue between wrServices and player app
+*** The following is visible in waverelay.log
+Broadcasting: Intent { act=com.persistentsystems.waverelayplayer.KIOSK_MODE flg=0x20 }
+java.lang.IllegalStateException: Cannot broadcast before boot completed
+        at android.os.Parcel.readException(Parcel.java:1628)
+        at android.os.Parcel.readException(Parcel.java:1573)
+        at android.app.ActivityManagerProxy.broadcastIntent(ActivityManagerNative.java:3056)
+        at com.android.commands.am.Am.sendBroadcast(Am.java:1011)
+        at com.android.commands.am.Am.onRun(Am.java:373)
+        at com.android.internal.os.BaseCommand.run(BaseCommand.java:47)
+        at com.android.commands.am.Am.main(Am.java:100)
+        at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+        at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:251)
+        

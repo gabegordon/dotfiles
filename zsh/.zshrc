@@ -149,3 +149,6 @@ alias med="mps4 e21 && (mps clean > /dev/null; nohup bear mps4 e2 > /dev/null 2>
 alias gc="git clean -fXdq --exclude=\"!compile_commands.json\" --exclude=\"!.ccls-cache\""
 alias mps clean="gc"
 alias fixc="python3 /home/ggordon/fixinclude.py"
+alias r2a='adb -s 18561 wait-for-device shell busybox tail -f /var/log/ptt.log'
+alias r3a='adb -s 30381 wait-for-device shell busybox tail -f /var/log/ptt.log'
+alias r1a='adb -s 43142 wait-for-device shell busybox tail -f /var/log/ptt.log'
