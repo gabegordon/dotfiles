@@ -1,4 +1,9 @@
 * Tasks
+** Config files
+*** Push all vars to file 
+*** Review list of excluded vars
+*** Check block list after fixing upload 
+*** Check mising
 * Snippets
 * Notes
 ** :WR-3772:

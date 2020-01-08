@@ -31,7 +31,7 @@ HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
+#COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -50,7 +50,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(sudo systemd colored-man-pages colorize cp copydir dirpersist extract history gitignore git zsh-syntax-highlighting)
+plugins=(sudo systemd colored-man-pages colorize cp copydir dirpersist extract history gitignore git zsh-syntax-highlighting zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 source ~/android-repo/ps/ps-build/env.source ~/android-repo/ps/ps-build
 
@@ -108,6 +108,8 @@ autoload -U compinit && compinit -u
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 export PATH=$PATH:/home/ggordon/android-repo/ps/ps-build/bin
 export PATH=$PATH:/home/ggordon/ps-tools/bin
+export PATH=$PATH:/opt/gstreamer-sdk-1.8.1/dist/lib/
+export PATH=$PATH:/home/ggordon/.local/kitty.app/bin
 #export PATH=$PATH:/home/ggordon/ndk/toolchain/bin
 
 alias emax="emacsclient -c -n"
@@ -118,9 +120,10 @@ alias sudo='sudo '
 alias ml='cat /var/log/media.log'
 alias mlt='adb -s 18561 shell busybox tail -f /var/log/media.log'
 alias wl1='adb -s 43142 shell cat /var/log/waverelay.log'
-alias wlt2='adb -s 18561 busybox tail -f /var/log/waverelay.log'
+alias wlt2='adb -s 18561 wait-for-device  shell  busybox tail -f /var/log/waverelay.log'
+alias wlt3='adb -s 30381 wait-for-device  shell  busybox tail -f /var/log/waverelay.log'
 alias wl2='adb -s 18561 shell cat /var/log/waverelay.log'
-alias wlt1='adb -s 30381 busybox tail -f /var/log/waverelay.log'
+alias wlt1='adb -s 30381 shell busybox tail -f /var/log/waverelay.log'
 alias wrt='busybox tail -f /var/log/wrsa.log'
 alias ..='cd ..'
 alias addpath='export PATH=$PATH:/home/WAVERELAY/ggordon/toolchain/bin'
@@ -132,9 +135,9 @@ alias sudo='nocorrect sudo'
 alias capslock='setxkbmap -layout us -option ctrl:nocaps'
 alias r3s='adb -s 30381 wait-for-device shell'
 alias r2s='adb -s 18561 wait-for-device shell'
-alias r1s='adb -s 43142 wait-for-device shell'
+alias r1s='adb -s 27490 wait-for-device shell'
 alias r2='adb -s 18561 wait-for-device'
-alias r1='adb -s 43142 wait-for-device'
+alias r1='adb -s 27490 wait-for-device'
 alias r3='adb -s 30381 wait-for-device'
 alias compfix="sed -i \'s|\"command\": \"cc|\"command\": \"arm-linux-androideabi-gcc|g\' compile_commands.json"
 alias pushboth='r1 remount && r2 remount && mps4 e21 && r1 reboot && r2 reboot'
@@ -152,3 +155,4 @@ alias fixc="python3 /home/ggordon/fixinclude.py"
 alias r2a='adb -s 18561 wait-for-device shell busybox tail -f /var/log/ptt.log'
 alias r3a='adb -s 30381 wait-for-device shell busybox tail -f /var/log/ptt.log'
 alias r1a='adb -s 43142 wait-for-device shell busybox tail -f /var/log/ptt.log'
+fpath+=${ZDOTDIR:-~}/.zsh_functions
