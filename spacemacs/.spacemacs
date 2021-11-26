@@ -23,6 +23,7 @@
      (semantic :disabled-for emacs-lisp)
      yaml
      lsp
+     (syntax-checking :variables syntax-checking-enable-tooltips nil)
      )
    dotspacemacs-additional-packages '(
                                       windmove
@@ -124,6 +125,7 @@
 
    ;; Shell
    shell-default-term-shell "/bin/zsh"
+
    )
    (setq default-frame-alist '((font . "-NATH-Office Code Pro D-light-normal-normal-*-16-*-*-*-*-0-iso10646-1")))
   )
@@ -144,6 +146,12 @@
 
   (add-to-list 'spacemacs-indent-sensitive-modes 'c-mode)
   (add-to-list 'spacemacs-indent-sensitive-modes 'c++-mode)
+
+  (setq lsp-ui-doc-enable nil)
+  (setq lsp-modeline-code-actions-enable nil)
+  (setq lsp-modeline-diagnostics-enable nil)
+  (setq lsp-signature-auto-activate nil) ;; you could manually request them via `lsp-signature-activate`
+  (setq lsp-lens-enable nil)
 
   ;; Settings
   (spacemacs/toggle-golden-ratio-on)
