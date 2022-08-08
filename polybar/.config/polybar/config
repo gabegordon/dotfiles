@@ -70,10 +70,10 @@ type = internal/cpu
 interval = 1.0
 label = "CPU %percentage%%"
 
-[module/memory]
-type = internal/memory
-interval = 1.0
-label = "RAM %gb_used% / %gb_free%"
+;[module/memory]
+;type = internal/memory
+;interval = 1.0
+;label = "RAM %gb_used% / %gb_free%"
 
 [module/pulseaudio]
 type = internal/pulseaudio

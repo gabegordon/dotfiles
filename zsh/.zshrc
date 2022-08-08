@@ -8,7 +8,7 @@ fi
 # If you come from bash you might have to change your $PATH.
 #
 # Path to your oh-my-zsh installation.
- export ZSH=/home/gabe/.oh-my-zsh
+ export ZSH=/home/ggordon/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -58,7 +58,7 @@ ENABLE_CORRECTION="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(sudo systemd colored-man-pages colorize cp copydir dirpersist extract history gitignore git zsh-syntax-highlighting zsh-autosuggestions fasd)
+plugins=(sudo systemd colored-man-pages colorize cp copypath dirpersist extract history gitignore git zsh-syntax-highlighting zsh-autosuggestions fasd)
 source $ZSH/oh-my-zsh.sh
 
 
@@ -113,12 +113,12 @@ setopt HIST_BEEP                 # Beep when accessing nonexistent history.
 #export PATH=$PATH:/home/ggordon/ps-tools/bin
 #export PATH=$PATH:/opt/gstreamer-sdk-1.8.1/dist/lib/
 export PATH=$PATH:/home/ggordon/.local/kitty.app/bin
-export PATH="home/gabe/bin:$PATH"
+export PATH="home/ggordon/bin:$PATH"
 export PATH=$PATH:~/gerrit/ps-tools/bin
-#export PS_BUILD_RELEASE_FLAG=2
-#export PATH=$PATH:/home/gabe/repo/vendor/persistent/standalone-toolchain/bin
-#export PATH=$PATH:/home/gabe/marsh_repo/ps/standalone-toolchain/bin/
-#export PATH=$PATH:/home/gabe/marsh_repo/ps/ps-build
+export PS_BUILD_RELEASE_FLAG=2
+export PATH=$PATH:/home/ggordon/repo/vendor/persistent/standalone-toolchain/bin
+#export PATH=$PATH:/home/ggordon/marsh_repo/ps/standalone-toolchain/bin/
+#export PATH=$PATH:/home/ggordon/repo/vendor/persistent/ps-build/bin
 
 alias emax="emacsclient -c -n"
 alias sudo="sudo "
@@ -158,7 +158,7 @@ alias rtags="mps clean && bear mps e2 && rc -J ."
 alias med="mps4 e21 && (mps clean > /dev/null; nohup bear mps4 e2 > /dev/null 2>&1) &"
 alias gc="git clean -fXdq --exclude=\"!compile_commands.json\" --exclude=\"!ccls-.cache\""
 alias 'mps clean'="gc"
-alias fixc="python3 /home/gabe/fixinclude.py"
+alias fixc="python3 /home/ggordon/fixinclude.py"
 alias r2a='adb -s 18561 wait-for-device shell busybox tail -f /var/log/ptt.log'
 alias r3a='adb -s 30381 wait-for-device shell busybox tail -f /var/log/ptt.log'
 alias r1a='adb -s 43142 wait-for-device shell busybox tail -f /var/log/ptt.log'
@@ -171,6 +171,7 @@ alias sd='fasd -sid'     # interactive directory selection
 alias sf='fasd -sif'     # interactive file selection
 alias z='fasd_cd -d'     # cd, same functionality as j in autojump
 alias zz='fasd_cd -d -i' # cd with interactive selection
+#alias adb='adb wait-for-device'
 fpath+=${ZDOTDIR:-~}/.zsh_functions
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
