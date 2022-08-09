@@ -23,31 +23,29 @@ height = 30
 
 line-size = 16
 
-spacing = 2
 padding-right = 5
 module-margin = 4
 
-font-0 = NotoSans-Regular:size=13;-1
+font-0 = NotoSans-Regular:size=13
+font-1 = Material Icons:size=15;1
+font-2 = FontAwesome:size=12;2
 
 tray-position = center
 tray-offset-x = -30
 
 modules-left = i3
-modules-right = cpu memory date
+modules-right = pulseaudio cpu memory date
 
 [module/i3]
 type = internal/i3
 strip-wsnumbers = true
 index-sort = true
+enable-scroll = false
 
-format = <label-state> <label-mode>
-
-label-mode = %mode%
-label-mode-padding = 2
-label-mode-background = #e60053
+format = <label-state> 
 
 label-focused = %name%
-label-focused-underline = ${colors.nord11}
+label-focused-background = ${colors.nord11}
 label-focused-padding = 1
 
 label-occupied = %name%
@@ -70,28 +68,29 @@ type = internal/cpu
 interval = 1.0
 label = "CPU %percentage%%"
 
-;[module/memory]
-;type = internal/memory
-;interval = 1.0
-;label = "RAM %gb_used% / %gb_free%"
-
 [module/pulseaudio]
 type = internal/pulseaudio
-volume-format = <ramp-volume> <label-volume>
-
-label-muted = 0
+format-volume = <ramp-volume> <label-volume>
+label-muted =  Muted
+label-muted-foreground = #666
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
 
 [module/date]
 type = internal/date
-date = %%{F#99}%Y-%m-%d%%{F-}  %%{F#fff}%H:%M%%{F-}
-date-alt = %%{F#fff}%A, %d %B %Y  %%{F#fff}%H:%M%%{F#666}:%%{F#fba922}%S%%{F-}
+label = %{F#ffffffff}%date%%{F-}   %{F#fff}%time%%{F-}
+date = %m/%d/%Y
+date-alt = %%{F#fff}%A, %B %d, %Y%%{F-}
+time = %I:%M %p
+time-alt = ${self.time}
 
 [module/memory]
 type = internal/memory
 format = <label> <bar-used>
 label = RAM
 
-bar-used-width = 20
+bar-used-width = 10
 bar-used-foreground-0 = #aaff77
 bar-used-foreground-1 = #aaff77
 bar-used-foreground-2 = #fba922
@@ -105,22 +104,3 @@ bar-used-empty = ─
 bar-used-empty-font = 6
 bar-used-empty-foreground = #444444
 
-[module/volume]
-type = internal/volume
-speaker-mixer = Speaker
-headphone-mixer = Headphone
-headphone-id = 9
-
-format-volume = <ramp-volume> <label-volume>
-label-muted =   muted
-label-muted-foreground = #66
-
-ramp-volume-0 = 
-ramp-volume-1 = 
-ramp-volume-2 = 
-ramp-volume-3 = 
-
-[module/clock]
-type = internal/date
-interval = 2
-date = %%{F#999}%Y-%m-%d%%{F-}  %%{F#fff}%H:%M%%{F-}
