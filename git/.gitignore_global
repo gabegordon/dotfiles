@@ -1,4 +1,5 @@
 compile_commands.json
+.cache
 *~
 .*.swp
 .DS_Store
@@ -28,3 +29,6 @@ Session.vim
 .idea
 .idea/*
 .idea/
+.ccls-cache
+wr_monitor.sh
+.ccls

@@ -1,18 +1,25 @@
 [colors]
-background = ${xrdb:color0:#222}
-foreground = ${xrdb:color7:#222}
-foreground-alt = ${xrdb:color7:#222}
-primary = ${xrdb:color1:#222}
-secondary = ${xrdb:color2:#222}
-alert = ${xrdb:color3:#222}
+nord0 = #2E3440
+nord1 = #3B4252
+nord2 = #434C5E
+nord3 = #4C566A
+nord4 = #D8DEE9
+nord5 = #E5E9F0
+nord6 = #ECEFF4
+nord7 = #8FBCBB
+nord8 = #88C0D0
+nord9 = #81A1C1
+nord10 = #5E81AC
+nord11 = #BF616A
+nord12 = #D08770
+nord13 = #EBCB8B
+nord14 = #A3BE8C
+nord15 = #B48EAD
 
 [bar/top]
-monitor = eDP-1
+monitor = ${env:MONITOR:}
 width = 100%
-height = 32
-
-background = ${colors.background}
-foreground = ${colors.foreground}
+height = 30
 
 line-size = 16
 
@@ -21,109 +28,62 @@ padding-right = 5
 module-margin = 4
 
 font-0 = NotoSans-Regular:size=13;-1
-font-1 = MaterialIcons:size=14;0
-font-2 = FontAwesome5Free:size=12;0
-font-3 = Weather Icons:size=12;1
 
 tray-position = center
 tray-offset-x = -30
 
-modules-left = i3 player 
-modules-right = filesystem pulseaudio wireless-network battery date
-
-[module/weather]
-type = custom/script
-exec = ~/.config/polybar/weather.sh
-interval = 600
-label-font = 1
-
-[module/filesystem]
-type = internal/fs
-
-; Mountpoints to display
-mount-0 = /
-format-mounted = <label-mounted>
-
-; Available tags:
-;   <label-unmounted> (default)
-format-unmounted = <label-unmounted>
-
-label-mounted = %mountpoint%: %used% of %total%
-
-; Available tokens:
-;   %mountpoint%
-; Default: %mountpoint% is not mounted
-label-unmounted = %mountpoint%: not mounted
-label-unmounted-foreground = #55
-
-[module/player]
-type = custom/script
-exec = ~/.config/polybar/player-mpris-simple.sh
-interval = 3
-click-left = playerctl previous
-click-right = playerctl next
-click-middle = playerctl play-pause
+modules-left = i3
+modules-right = cpu memory date
 
 [module/i3]
 type = internal/i3
 strip-wsnumbers = true
+index-sort = true
 
 format = <label-state> <label-mode>
 
 label-mode = %mode%
 label-mode-padding = 2
-label-mode-background = ${colors.primary}
+label-mode-background = #e60053
 
-label-focused = %index%
-label-focused-foreground = ${colors.foreground}
-label-focused-background = ${colors.secondary}
-label-focused-padding = 4
+label-focused = %name%
+label-focused-underline = ${colors.nord11}
+label-focused-padding = 1
 
-label-unfocused = %index%
-label-unfocused-padding = 4
+label-occupied = %name%
+label-occupied-padding = 1
 
-label-visible = %index%
-label-visible-underline = #555555
-label-visible-padding = 4
+label-empty = %name%
+label-empty-padding = 1
+label-empty-foreground = ${colors.nord3}
 
-label-urgent = %index%
-label-urgent-foreground = #000000
-label-urgent-background = #bd2c40
-label-urgent-padding = 4
+label-urgent = %name%
+label-urgent-background = ${colors.nord15}
 
 ; Separator in between workspaces
 label-separator = |
 label-separator-padding = 2
-label-separator-foreground = ${colors.primary}
+label-separator-foreground = ${colors.nord3}
+
+[module/cpu]
+type = internal/cpu
+interval = 1.0
+label = "CPU %percentage%%"
+
+;[module/memory]
+;type = internal/memory
+;interval = 1.0
+;label = "RAM %gb_used% / %gb_free%"
 
 [module/pulseaudio]
 type = internal/pulseaudio
 volume-format = <ramp-volume> <label-volume>
 
-label-muted = 
-
-[module/backlight]
-type = internal/xbacklight
-format = <ramp> <bar>
-
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
-
-bar-width = 10
-bar-indicator = |
-bar-indicator-font = 3
-bar-indicator-foreground = #ff
-bar-fill = ─
-bar-fill-font = 3
-bar-fill-foreground = #c9665e
-bar-empty = ─
-bar-empty-font = 3
-bar-empty-foreground = #44
+label-muted = 0
 
 [module/date]
 type = internal/date
-date =    %%{F#99}%Y-%m-%d%%{F-}  %%{F#fff}%H:%M%%{F-}
+date = %%{F#99}%Y-%m-%d%%{F-}  %%{F#fff}%H:%M%%{F-}
 date-alt = %%{F#fff}%A, %d %B %Y  %%{F#fff}%H:%M%%{F#666}:%%{F#fba922}%S%%{F-}
 
 [module/memory]
@@ -145,23 +105,6 @@ bar-used-empty = ─
 bar-used-empty-font = 6
 bar-used-empty-foreground = #444444
 
-[module/wireless-network]
-type = internal/network
-interface = wlp2s0
-interval = 3.0
-ping-interval = 10
-
-format-connected = <ramp-signal> <label-connected>
-label-connected = %essid%
-label-disconnected =    not connected
-label-disconnected-foreground = #66
-
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
-
 [module/volume]
 type = internal/volume
 speaker-mixer = Speaker
@@ -176,24 +119,6 @@ ramp-volume-0 = 
 ramp-volume-1 = 
 ramp-volume-2 = 
 ramp-volume-3 = 
-
-[module/battery]
-type = internal/battery
-
-full-at = 99
-
-battery = BAT0
-adapter = ADP1
-
-format-charging = <label-charging>
-
-format-discharging = <label-discharging>
-
-label-charging = Charging %percentage%%
-
-label-discharging = Discharging %percentage%%
-
-label-full = Fully charged
 
 [module/clock]
 type = internal/date
