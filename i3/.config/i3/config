@@ -118,5 +118,5 @@ bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5
 
 # gaps
 for_window [class="^.*"] border pixel 3
-gaps inner 1
-gaps outer 1
+#gaps inner 1
+#gaps outer 1
