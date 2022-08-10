@@ -29,9 +29,11 @@ setopt HIST_BEEP                 # Beep when accessing nonexistent history.
 setopt autopushd
 
 # Paths
-export PATH=$PATH:~/gerrit/ps-tools/bin
+path+=('/home/ggordon/gerrit/ps-tools/bin')
 export PS_BUILD_RELEASE_FLAG=2
-export PATH=$PATH:/home/ggordon/repo/vendor/persistent/standalone-toolchain/bin
+path+=('home/ggordon/repo/vendor/persistent/standalone-toolchain/bin')
+path+=('/home/ggordon/.emacs.d/bin')
+export PATH
 
 # Alias
 alias emax="emacsclient -c -n"
@@ -49,5 +51,26 @@ alias fixc="python3 fixinclude.py"
 alias fd='fd-find'
 alias zz='fasd_cd -d -i' 
 alias adbw='adb wait-for-device'
+
+lazynvm() {
+  unset -f nvm node npm
+  export NVM_DIR=~/.nvm
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+}
+
+nvm() {
+  lazynvm 
+  nvm $@
+}
+
+node() {
+  lazynvm
+  node $@
+}
+
+npm() {
+  lazynvm
+  npm $@
+}
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

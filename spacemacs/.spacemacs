@@ -11,31 +11,28 @@
       auto-completion-enable-help-tooltip t
       auto-completion-enable-sort-by-usage t
       :disabled-for org erc)
-     c-c++
+     (c-c++ :variables c-c++-backend 'lsp-ccls)
      emacs-lisp
      (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
      git
      html
      javascript
-     markdown
      python
-     (semantic :disabled-for emacs-lisp)
      lsp
-     (syntax-checking :variables syntax-checking-enable-tooltips nil)
      )
    dotspacemacs-additional-packages '(
                                       windmove
                                       evil-surround
                                       android-mode
                                       bm
-                                      tabify
                                       dtrt-indent
                                       vim-powerline
                                       term-cursor
                                       helm-lsp
                                       )
    dotspacemacs-frozen-packages '()
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(
+                                    )
    dotspacemacs-install-packages 'used-only))
 
 (defun dotspacemacs/init ()
@@ -145,14 +142,15 @@
   (add-hook 'mouse-leave-buffer-hook #'kill-minibuffer)
   (scroll-bar-mode -1)
 
-  (add-to-list 'spacemacs-indent-sensitive-modes 'c-mode)
-  (add-to-list 'spacemacs-indent-sensitive-modes 'c++-mode)
+  ;;(add-to-list 'spacemacs-indent-sensitive-modes 'c-mode)
+  ;;(add-to-list 'spacemacs-indent-sensitive-modes 'c++-mode)
 
   (setq lsp-ui-doc-enable nil)
   (setq lsp-modeline-code-actions-enable nil)
   (setq lsp-modeline-diagnostics-enable nil)
   (setq lsp-signature-auto-activate nil) ;; you could manually request them via `lsp-signature-activate`
   (setq lsp-lens-enable nil)
+  (setq native-comp-deferred-compilation t)
 
   ;; Settings
   (spacemacs/toggle-golden-ratio-on)
@@ -206,30 +204,10 @@
 
   ;;(setf (lsp-session-folders-blacklist (lsp-session)) nil)
   ;;(lsp--persist-session (lsp-session))
+  (setq read-process-output-max (* 1024 1024)) ;; 1mb
+  (setq lsp-idle-delay 1)
+  (setq lsp-log-io nil) ; if set to true can cause a performance hit
+  (setq evil-want-Y-yank-to-eol t)
+  (setq helm-buffer-max-length 40)
+  (setq lsp-enable-file-watchers nil)
   )
-
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "065efdd71e6d1502877fd5621b984cded01717930639ded0e569e1724d058af8" default))
- '(evil-want-Y-yank-to-eol t)
- '(helm-buffer-max-length 40)
- '(package-selected-packages
-   '(ws-butler writeroom-mode winum which-key web-mode web-beautify volatile-highlights vim-powerline vi-tilde-fringe uuidgen use-package undo-tree term-cursor tagedit symon symbol-overlay string-inflection string-edit stickyfunc-enhance srefactor sphinx-doc spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline-all-the-icons space-doc smeargle slim-mode scss-mode sass-mode restart-emacs rainbow-delimiters quickrun pytest pylookup pyenv-mode pydoc py-isort pug-mode prettier-js popwin poetry pcre2el paradox overseer open-junk-file npm-mode nose nodejs-repl nameless multi-line mmm-mode material-theme markdown-toc macrostep lsp-ui lsp-python-ms lsp-pyright lsp-origami lorem-ipsum livid-mode live-py-mode link-hint json-reformat json-navigator json-mode js2-refactor js-doc inspector info+ indent-guide importmagic impatient-mode hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-lsp helm-ls-git helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-ag google-translate google-c-style golden-ratio gitignore-templates git-timemachine git-modes git-messenger git-link gh-md gendoxy fuzzy forge font-lock+ flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-snipe evil-numbers evil-nerd-commenter evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr emmet-mode elisp-slime-nav elisp-def editorconfig dumb-jump dtrt-indent drag-stuff dotenv-mode disaster dired-quick-sort diminish devdocs define-word company-ycmd company-web company-statistics company-quickhelp company-c-headers company-anaconda column-enforce-mode code-cells clean-aindent-mode bm blacken auto-highlight-symbol auto-compile android-mode aggressive-indent ace-link ace-jump-helm-line ac-ispell))
- '(warning-suppress-types '((comp) (comp) (comp) (comp) (comp) (comp))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:background nil))))
- '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
-)
