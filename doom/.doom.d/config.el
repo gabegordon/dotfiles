@@ -108,9 +108,28 @@
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
+(custom-set-variables
+ '(helm-follow-mode-persistent t))
+
 (define-key evil-normal-state-map (kbd "SPC TAB") 'er-switch-to-previous-buffer)
 (define-key evil-normal-state-map (kbd "SPC c b") 'xref-pop-marker-stack)
+(define-key evil-normal-state-map (kbd "SPC m g a") 'ff-get-other-file)
+(define-key evil-normal-state-map (kbd "SPC m g g") 'xref-find-definitions)
+(define-key evil-normal-state-map (kbd "SPC m g b") 'xref-pop-marker-stack)
+(define-key evil-normal-state-map (kbd "SPC s a p") 'helm-projectile-ag)
+(define-key evil-normal-state-map (kbd "SPC j i") 'helm-semantic-or-imenu)
+(define-key doom-leader-open-map (kbd "r") 'helm-resume)
 
-(setq eldoc-echo-area-use-multiline-p 4)
+(setq eldoc-echo-area-use-multiline-p 6)
 (setq eldoc-echo-area-display-truncation-message nil)
 (setq-default evil-escape-key-sequence "fd")
+(after! elgot
+  (add-to-list 'eglot-server-programs '((c++-mode c-mode) . ("clangd" "--header-insertion=never --header-insertion-decorators=0"))))
+
+(after! helm
+  (define-key helm-map (kbd "C-h") 'helm-find-files-up-one-level))
+(run-at-time "5 min" 300 'recentf-save-list)
+(add-hook 'prog-mode-hook #'(lambda ()
+                             (message "running prog-mode-hook")
+                             (dtrt-indent-mode)
+                             (dtrt-indent-adapt)))

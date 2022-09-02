@@ -109,6 +109,7 @@ exec --no-startup-id xmodmap -e 'keycode 112='
 exec --no-startup-id xmodmap -e 'keycode 117='
 #exec --no-startup-id touchpad-indicator
 exec_always--no-startup-id nm-applet &
+exec --no-startup-id ~/.config/i3/picom.sh
 
 bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer --increase 5 --allow-boost
 bindsym XF86AudioLowerVolume exec --no-startup-id pamixer --decrease 5 --allow-boost
