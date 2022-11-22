@@ -51,6 +51,10 @@ alias fixc="python3 fixinclude.py"
 alias fd='fd-find'
 alias zz='fasd_cd -d -i' 
 alias adbw='adb wait-for-device'
+alias wlt='adb wait-for-device shell tail -f /var/log/waverelay.log'
+alias mlt='adb wait-for-device shell tail -f /var/log/media.log'
+alias glt='adb wait-for-device shell tail -f /var/log/gstd.log'
+alias dlt='adb wait-for-device shell dmesg -w'
 
 lazynvm() {
   unset -f nvm node npm
