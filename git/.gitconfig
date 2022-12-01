@@ -52,3 +52,5 @@
 	includeIssuesSection = false
 [help]
 	autocorrect = 15
+[protocol "file"]
+	allow = always
