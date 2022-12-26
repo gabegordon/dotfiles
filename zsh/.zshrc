@@ -1,12 +1,12 @@
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 ZSH_THEME="powerlevel10k/powerlevel10k" 
 export ZSH=/home/ggordon/.oh-my-zsh
 
 plugins=(sudo colored-man-pages colorize extract zsh-syntax-highlighting zsh-autosuggestions fasd)
 source $ZSH/oh-my-zsh.sh
+
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
 ENABLE_CORRECTION="true"
 HISTFILE="$HOME/.zsh_history"
@@ -31,7 +31,7 @@ setopt autopushd
 # Paths
 path+=('/home/ggordon/gerrit/ps-tools/bin')
 export PS_BUILD_RELEASE_FLAG=2
-path+=('home/ggordon/repo/vendor/persistent/standalone-toolchain/bin')
+path+=('/home/ggordon/repo/vendor/persistent/standalone-toolchain/bin')
 path+=('/home/ggordon/.emacs.d/bin')
 export PATH
 

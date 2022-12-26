@@ -75,14 +75,14 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-(use-package zoom
-  :hook (doom-first-input . zoom-mode)
-  :config
-  (setq zoom-size '(0.7 . 0.7)
-        zoom-ignored-major-modes '(dired-mode vterm-mode help-mode helpful-mode rxt-help-mode help-mode-menu org-mode)
-        zoom-ignored-buffer-names '("*doom:scratch*" "*info*" "*helpful variable: argv*")
-        zoom-ignored-buffer-name-regexps '("^\\*calc" "\\*helpful variable: .*\\*")
-        zoom-ignore-predicates (list (lambda () (< (count-lines (point-min) (point-max)) 20)))))
+;;(use-package zoom
+;;  :hook (doom-first-input . zoom-mode)
+;;  :config
+;;  (setq zoom-size '(0.7 . 0.7)
+;;        zoom-ignored-major-modes '(dired-mode vterm-mode help-mode helpful-mode rxt-help-mode help-mode-menu org-mode)
+;;        zoom-ignored-buffer-names '("*doom:scratch*" "*info*" "*helpful variable: argv*")
+;;        zoom-ignored-buffer-name-regexps '("^\\*calc" "\\*helpful variable: .*\\*")
+;;        zoom-ignore-predicates (list (lambda () (< (count-lines (point-min) (point-max)) 20)))))
 
 (after! lsp-mode
   (setq lsp-enable-symbol-highlighting nil)
@@ -120,16 +120,22 @@
 (define-key evil-normal-state-map (kbd "SPC j i") 'helm-semantic-or-imenu)
 (define-key doom-leader-open-map (kbd "r") 'helm-resume)
 
-(setq eldoc-echo-area-use-multiline-p 6)
 (setq eldoc-echo-area-display-truncation-message nil)
+(setq eldoc-echo-area-use-multiline-p nil)
 (setq-default evil-escape-key-sequence "fd")
 (after! elgot
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) . ("clangd" "--header-insertion=never --header-insertion-decorators=0"))))
 
 (after! helm
+  (setq helm-completion-style 'helm-fuzzy)
   (define-key helm-map (kbd "C-h") 'helm-find-files-up-one-level))
 (run-at-time "5 min" 300 'recentf-save-list)
 (add-hook 'prog-mode-hook #'(lambda ()
                              (message "running prog-mode-hook")
                              (dtrt-indent-mode)
                              (dtrt-indent-adapt)))
+(require 'stickyfunc-enhance)
+(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+(semantic-mode 1)
+(add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
+(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode)
