@@ -4,4 +4,5 @@
 #       to $HOME/.config/regolith2/i3/config.d/
 exec --no-startup-id emacs --daemon
 exec --no-startup-id xset r rate 200 50
+exec_always --no-startup-id dunst
 bindsym $mod+e exec emacsclient -c -n

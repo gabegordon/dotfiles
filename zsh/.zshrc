@@ -55,6 +55,7 @@ alias wlt='adb wait-for-device shell tail -f /var/log/waverelay.log'
 alias mlt='adb wait-for-device shell tail -f /var/log/media.log'
 alias glt='adb wait-for-device shell tail -f /var/log/gstd.log'
 alias dlt='adb wait-for-device shell dmesg -w'
+alias gk='gitg'
 
 lazynvm() {
   unset -f nvm node npm
