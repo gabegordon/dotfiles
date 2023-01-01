@@ -3,7 +3,9 @@ set autoindent
 set nu
 imap fd <Esc>
 syntax on
-set clipboard=unnamedplus
+set clipboard^=unnamed,unnamedplus
+autocmd VimEnter * call setreg('+', system('xsel -ob'))
+autocmd VimLeave * call system("xsel -ib", getreg('+')) 
 set encoding=utf-8
 set ruler
 
@@ -33,7 +35,6 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
-autocmd VimLeave * call system("xsel -ib", getreg('+'))
 call plug#begin('~/.vim/plugged')
 
 Plug 'vim-airline/vim-airline'

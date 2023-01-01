@@ -20,12 +20,12 @@ set_from_resource $i3-wm.bar.status_command i3-wm.bar.status_command i3xrocks -u
 
 # The bar configuration
 bar {
+  tray_output primary
   position top
   mode $i3-wm.bar.mode
   font pango:$i3-wm.bar.font
   separator_symbol $i3-wm.bar.separatorchar
   status_command $i3-wm.bar.status_command
-  tray_output primary
   strip_workspace_numbers $i3-wm.bar.stripworkspacenumbers
   workspace_min_width $i3-wm.bar.workspace_min_width
 
