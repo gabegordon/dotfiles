@@ -10,4 +10,8 @@ exec --no-startup-id nm-applet
 bindsym $mod+e exec emacsclient -c -n
 bindsym $mod+w layout tabbed
 bindsym $mod+s layout toggle split
-
+bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer --increase 5 --allow-boost
+bindsym XF86AudioLowerVolume exec --no-startup-id pamixer --decrease 5 --allow-boost
+bindsym XF86AudioMute exec --no-startup-id pamixer -t
+for_window [class="vlc"] move to workspace V
+for_window [class="Microsoft Teams"] move to workspace $ws9

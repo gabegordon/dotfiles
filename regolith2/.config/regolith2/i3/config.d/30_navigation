@@ -36,7 +36,7 @@ bindsym $mod+Ctrl+$ws5_key workspace number $ws15
 bindsym $mod+Ctrl+$ws6_key workspace number $ws16
 bindsym $mod+Ctrl+$ws7_key workspace number $ws17
 bindsym $mod+Ctrl+$ws8_key workspace number $ws18
-bindsym $mod+Ctrl+$ws9_key workspace number $ws19
+bindsym $mod+Shift+v workspace V
 
 ## Navigate // Next Workspace // <> Tab ##
 set_from_resource $i3-wm.binding.ws_next i3-wm.binding.ws_next Tab

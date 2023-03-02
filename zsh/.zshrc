@@ -1,7 +1,8 @@
 ZSH_THEME="powerlevel10k/powerlevel10k" 
 export ZSH=/home/ggordon/.oh-my-zsh
+export NVM_LAZY_LOAD=true
 
-plugins=(sudo colored-man-pages colorize extract zsh-syntax-highlighting zsh-autosuggestions fasd)
+plugins=(sudo colored-man-pages colorize extract zsh-syntax-highlighting zsh-autosuggestions fasd zsh-nvm)
 source $ZSH/oh-my-zsh.sh
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -33,7 +34,12 @@ path+=('/home/ggordon/gerrit/ps-tools/bin')
 export PS_BUILD_RELEASE_FLAG=2
 path+=('/home/ggordon/repo/vendor/persistent/standalone-toolchain/bin')
 path+=('/home/ggordon/.emacs.d/bin')
+path+=('/home/ggordon/Android/Sdk/tools')
+path+=('/home/ggordon/Android/Sdk/platform-tools')
+path+=('/usr/lib/jvm/java-11-openjdk-amd64/bin')
 export PATH
+export ANDROID_HOME=/home/ggordon/Android/Sdk
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 
 # Alias
 alias emax="emacsclient -c -n"
@@ -55,27 +61,6 @@ alias wlt='adb wait-for-device shell tail -f /var/log/waverelay.log'
 alias mlt='adb wait-for-device shell tail -f /var/log/media.log'
 alias glt='adb wait-for-device shell tail -f /var/log/gstd.log'
 alias dlt='adb wait-for-device shell dmesg -w'
-alias gk='gitg &'
-
-lazynvm() {
-  unset -f nvm node npm
-  export NVM_DIR=~/.nvm
-  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-}
-
-nvm() {
-  lazynvm 
-  nvm $@
-}
-
-node() {
-  lazynvm
-  node $@
-}
-
-npm() {
-  lazynvm
-  npm $@
-}
+alias adbb='adb wait-for-device'
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
