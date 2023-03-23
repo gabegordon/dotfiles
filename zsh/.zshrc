@@ -32,7 +32,7 @@ setopt autopushd
 # Paths
 path+=('/home/ggordon/gerrit/ps-tools/bin')
 export PS_BUILD_RELEASE_FLAG=2
-path+=('/home/ggordon/repo/vendor/persistent/standalone-toolchain/bin')
+#path+=('/home/ggordon/repo/vendor/persistent/standalone-toolchain/bin')
 path+=('/home/ggordon/.emacs.d/bin')
 path+=('/home/ggordon/Android/Sdk/tools')
 path+=('/home/ggordon/Android/Sdk/platform-tools')

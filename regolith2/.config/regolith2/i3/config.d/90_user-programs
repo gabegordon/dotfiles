@@ -15,3 +15,4 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pamixer --decrease 5 --allow-b
 bindsym XF86AudioMute exec --no-startup-id pamixer -t
 for_window [class="vlc"] move to workspace V
 for_window [class="Microsoft Teams"] move to workspace $ws9
+bindsym $mod+p move workspace to output right
