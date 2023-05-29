@@ -32,3 +32,4 @@ Session.vim
 .ccls-cache
 wr_monitor.sh
 .ccls
+launch.json

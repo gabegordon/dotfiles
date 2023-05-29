@@ -128,6 +128,7 @@
 
 (after! helm
   (setq helm-completion-style 'helm-fuzzy)
+  (setq helm-follow-mode-persistent t)
   (define-key helm-map (kbd "C-h") 'helm-find-files-up-one-level))
 (run-at-time "5 min" 300 'recentf-save-list)
 (add-hook 'prog-mode-hook #'(lambda ()
@@ -139,3 +140,7 @@
 (semantic-mode 1)
 (add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
 (add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode)
+
+(require 'dap-gdb-lldb)
+(setq dap-auto-configure-mode t)
+(require 'dap-cpptools)

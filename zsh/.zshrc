@@ -42,7 +42,7 @@ export ANDROID_HOME=/home/ggordon/Android/Sdk
 export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 
 # Alias
-alias emax="emacsclient -c -n"
+alias e="emacsclient -c -nw"
 alias ..='cd ..'
 alias reb='adb shell reboot'
 alias serial='adb wait-for-device shell /system/vendor/sbin/fw_setenv console ttymxc2'
