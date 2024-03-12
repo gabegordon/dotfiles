@@ -31,19 +31,19 @@ setopt autopushd
 
 # Paths
 path+=('/home/ggordon/gerrit/ps-tools/bin')
-export PS_BUILD_RELEASE_FLAG=2
-#path+=('/home/ggordon/repo/vendor/persistent/standalone-toolchain/bin')
+path+=('/home/ggordon/repo/vendor/persistent/standalone-toolchain/bin')
 path+=('/home/ggordon/.emacs.d/bin')
 path+=('/home/ggordon/Android/Sdk/tools')
 path+=('/home/ggordon/Android/Sdk/platform-tools')
 path+=('/usr/lib/jvm/java-11-openjdk-amd64/bin')
+path+=('/home/ggordon/.config/emacs/bin')
 export PATH
 export ANDROID_HOME=/home/ggordon/Android/Sdk
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+#export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export PS_BUILD_RELEASE_FLAG=2
 
 # Alias
 alias e="emacsclient -c -nw"
-alias ..='cd ..'
 alias reb='adb shell reboot'
 alias serial='adb wait-for-device shell /system/vendor/sbin/fw_setenv console ttymxc2'
 alias sudo='nocorrect sudo'
@@ -51,7 +51,6 @@ alias capslock='setxkbmap -layout us -option ctrl:nocaps'
 alias perm="stat -c '%a %n' *"
 alias cls="ls -lha --color=always -F --group-directories-first |awk '{k=0;s=0;for(i=0;i<=8;i++){;k+=((substr(\$1,i+2,1)~/[rwxst]/)*2^(8-i));};j=4;for(i=4;i<=10;i+=3){;s+=((substr(\$1,i,1)~/[stST]/)*j);j/=2;};if(k){;printf(\"%0o%0o \",s,k);};print;}'"
 alias grh="git reset --hard HEAD"
-alias med="mps4 e21 && (mps clean > /dev/null; nohup bear mps4 e2 > /dev/null 2>&1) &"
 alias gc="git clean -fXdq --exclude=\"!compile_commands.json\" --exclude=\"!.cache\""
 alias fixc="python3 fixinclude.py"
 alias fd='fd-find'
@@ -61,6 +60,7 @@ alias wlt='adb wait-for-device shell tail -f /var/log/waverelay.log'
 alias mlt='adb wait-for-device shell tail -f /var/log/media.log'
 alias glt='adb wait-for-device shell tail -f /var/log/gstd.log'
 alias dlt='adb wait-for-device shell dmesg -w'
+alias adbs='adb wait-for-device shell'
 alias adbb='adb wait-for-device'
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

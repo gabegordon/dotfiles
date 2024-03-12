@@ -4,8 +4,6 @@ set nu
 imap fd <Esc>
 syntax on
 set clipboard^=unnamed,unnamedplus
-autocmd VimEnter * call setreg('+', system('xsel -ob'))
-autocmd VimLeave * call system("xsel -ib", getreg('+')) 
 set encoding=utf-8
 set ruler
 

@@ -26,7 +26,7 @@
         find = log --pretty=\"format:%Cgreen%H %Cblue%s\" --name-status --grep 
 [core]
 	excludesfile = ~/.gitignore_global
-	pager = diff-so-fancy | less --tabs=4 -RFX
+	#pager = diff-so-fancy | less --tabs=4 -RFX
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52

@@ -94,6 +94,8 @@
   (setq lsp-ui-sideline-enable nil)
   (setq lsp-ui-doc-enable nil))
 
+(add-hook 'c-c++-mode #'lsp)
+
 (windmove-default-keybindings)
 (setq bm-cycle-all-buffers t)
 
@@ -123,8 +125,6 @@
 (setq eldoc-echo-area-display-truncation-message nil)
 (setq eldoc-echo-area-use-multiline-p nil)
 (setq-default evil-escape-key-sequence "fd")
-(after! elgot
-  (add-to-list 'eglot-server-programs '((c++-mode c-mode) . ("clangd" "--header-insertion=never --header-insertion-decorators=0"))))
 
 (after! helm
   (setq helm-completion-style 'helm-fuzzy)
@@ -144,3 +144,14 @@
 (require 'dap-gdb-lldb)
 (setq dap-auto-configure-mode t)
 (require 'dap-cpptools)
+(setq package-install-upgrade-built-in t)
+(setq helm-case-fold-search t)
+(lsp-register-client
+   (make-lsp-client :new-connection
+                    (lsp-stdio-connection '("python3" "-m" "tagls"))
+                    :server-id 'tagls
+                    :activation-fn (lsp-activate-on "c" "cpp" "python")
+                    ;; provide initialization options:
+                    :initialization-options '((cache_dir . "/tmp/gtags"))
+                    :priority -2
+                    ))
