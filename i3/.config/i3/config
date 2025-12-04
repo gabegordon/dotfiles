@@ -108,7 +108,7 @@ exec --no-startup-id emacs --daemon
 #exec --no-startup-id xmodmap -e 'keycode 117='
 #exec --no-startup-id touchpad-indicator
 #exec_always--no-startup-id nm-applet &
-exec --no-startup-id ~/.config/i3/picom.sh
+#exec --no-startup-id ~/.config/i3/picom.sh
 #exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=ssh,secrets,pkcs11
 #exec --no-startup-id /usr/bin/gnome-screensaver
 exec --no-startup-id /usr/lib/gsd-xsettings
@@ -117,11 +117,13 @@ exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id gnome-flashback
 exec --no-startup-id xset r rate 200 50
 
-#bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer --increase 5 --allow-boost
-#bindsym XF86AudioLowerVolume exec --no-startup-id pamixer --decrease 5 --allow-boost
-#bindsym XF86AudioMute exec --no-startup-id pamixer -t
-#bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
-#bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5
+bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer --increase 5 --allow-boost
+bindsym XF86AudioLowerVolume exec --no-startup-id pamixer --decrease 5 --allow-boost
+bindsym XF86AudioMute exec --no-startup-id pamixer -t
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5
+#bindsym XF86MonBrightnessUp exec  --no-startup-id light -A 5 # increase screen brightness
+#bindsym XF86MonBrightnessDown exec  --no-startup-id light -U 5 # decrease screen brightness
 
 # gaps
 for_window [class="^.*"] border pixel 3

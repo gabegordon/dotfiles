@@ -26,6 +26,7 @@
         find = log --pretty=\"format:%Cgreen%H %Cblue%s\" --name-status --grep 
 [core]
 	excludesfile = ~/.gitignore_global
+	compression = 0
 	#pager = diff-so-fancy | less --tabs=4 -RFX
 [color "diff-highlight"]
 	oldNormal = red bold
@@ -54,3 +55,6 @@
 	autocorrect = 15
 [protocol "file"]
 	allow = always
+[http]
+	postBuffer = 500M
+	maxRequestBuffer = 100M

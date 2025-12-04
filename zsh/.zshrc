@@ -62,5 +62,6 @@ alias glt='adb wait-for-device shell tail -f /var/log/gstd.log'
 alias dlt='adb wait-for-device shell dmesg -w'
 alias adbs='adb wait-for-device shell'
 alias adbb='adb wait-for-device'
+alias rsed='{[[ -z $2 ]] && echo "usage: ${FUNCNAME[0]} oldtext newtext" && return command find . -type f -exec sed -i "s/${1}/${2}/g" {} \;}'
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

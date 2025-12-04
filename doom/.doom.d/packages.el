@@ -50,4 +50,3 @@
 ;(unpin! t)
 (package! helm-ag)
 (package! stickyfunc-enhance)
-(package! flycheck-eglot)

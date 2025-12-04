@@ -34,3 +34,4 @@ wr_monitor.sh
 .ccls
 launch.json
 .dir-locals.el
+.projectile
